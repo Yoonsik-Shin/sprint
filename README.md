@@ -62,7 +62,23 @@ $ yarn add -D prettier
 
 
 
-5. DB 연결
+5. tsconfig.json에 경로설정
+
+- 절대경로 지정
+
+```
+{
+	"compilerOptions": {
+		"paths": {
+      		"..": ["./src/*"]
+    	}
+	}
+}
+```
+
+
+
+6. DB 연결
 
 ```bash
 $ nest g mo db
@@ -71,6 +87,10 @@ $ nest g mo db
 ```bash
 $ yarn add typeorm @nestjs/typeorm mysql2
 ```
+
+- db.modules.ts에 Typeorm 설정추가
+
+
 
 !! 오류 발생 
 
