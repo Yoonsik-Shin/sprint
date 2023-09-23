@@ -33,3 +33,28 @@ $ yarn add @nestjs/config
 
 - app.module.ts 파일 수정
 
+
+
+!! 커밋 실수
+
+- git rebase로 수정함
+
+```bash
+$ git rebase -i HEAD~돌아가고싶은커밋수
+```
+
+
+
+4. prettier, eslint, vscode editor 설정
+
+- `.vscode/setting.json` 설정
+
+```bash
+$ yarn add -D eslint
+$ yarn add -D prettier
+```
+
+- `.prettierrc` 파일 작성
+
+
+
