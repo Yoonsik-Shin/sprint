@@ -100,6 +100,50 @@ $ yarn add typeorm @nestjs/typeorm mysql2
 
 
 
+7. typeorm migration 설정 추가
+
+- `type-orm.config.ts` 작성
+- `dotenv` 설치 필요
+
+```bash
+$ yarn add dotenv
+```
+
+- `package.json` `scripts` 추가
+
+```json
+```
+
+
+
+!!! 오류발생
+
+- TypeOrmModule.forRootAsync에서 logging과 synchronize가 비정상적으로 동작
+- 원인 : 해당 옵션에는 boolean값이 필요한데 환경변수에서 string 값을 받아서 무조건 true가 됨
+- 해결 : 삼항연산자로 string값이 같으면 true, 아니면 false로 설정되도록 바꿈
+
+```ts
+@Module({
+  imports: [
+    TypeOrmModule.forRootAsync({
+      useFactory: (config: ConfigService) => ({
+        synchronize: config.getOrThrow('DB_SYNC') === 'true' ? true : false,
+        logging: config.getOrThrow('DB_LOG') === 'true' ? true : false,
+      }),
+      inject: [ConfigService],
+    }),
+  ],
+})
+```
+
+- 더 찾아보니 환경변수를 숫자 (`0`, `1`)를 준 후 옵션에서는 `Boolean()` 생성자 함수로 감쌈
+
+```ts
+synchronize: Boolean(process.env.DB_LOG),
+```
+
+
+
 ## 코드 구현
 
 ```
