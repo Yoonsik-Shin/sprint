@@ -1,3 +1,7 @@
+# 작업 순서
+
+## 기본 설정
+
 1. git 컨벤션 설정
 
 ```bash
@@ -47,14 +51,39 @@ $ git rebase -i HEAD~돌아가고싶은커밋수
 
 4. prettier, eslint, vscode editor 설정
 
-- `.vscode/setting.json` 설정
+- `.vscode/settings.json` 설정
 
 ```bash
 $ yarn add -D eslint
 $ yarn add -D prettier
 ```
 
-- `.prettierrc` 파일 작성
+- `.prettierrc`, `.eslintrc.js` 파일 작성
 
 
+
+5. DB 연결
+
+```bash
+$ nest g mo db
+```
+
+```bash
+$ yarn add typeorm @nestjs/typeorm mysql2
+```
+
+!! 오류 발생 
+
+자동으로 코드 컨벤션 안바뀌는 오류
+
+원인 : `.vscode/settings.json`에서 `setting.json`으로 오타냄
+
+
+
+## 코드 구현
+
+```
+```
+
+### UserModule
 
