@@ -23,7 +23,8 @@
     "tom:create": "npm run tom migration:create ./migrations/Mig",
     "tom:gen": "npm run tom migration:generate ./migrations/Mig -- -d ./src/db/type-orm.config.ts",
     "tom:up": "npm run tom migration:run -- -d ./src/db/type-orm.config.ts",
-    "tom:down": "npm run tom migration:revert -- -d ./src/db/type-orm.config.ts"
+    "tom:down": "npm run tom migration:revert -- -d ./src/db/type-orm.config.ts",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -60,7 +61,8 @@
     "ts-loader": "^9.4.3",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.1.3"
+    "typescript": "^5.1.3",
+    "husky": "^8.0.0"
   },
   "jest": {
     "moduleFileExtensions": [
