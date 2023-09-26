@@ -172,9 +172,24 @@ $ nest g res users --no-spec
 ```
 
 1. Entity 작성
-   - `User`
+
+   - `User` 
    - `Profile`
    - `Job`
    - `DevCareer`
-2. 
+
+2. DTO 작성
+
+   - `class-validator`, `class-transformer` 설치
+
+   ```bash
+   $ yarn add class-validator class-transformer
+   ```
+
+3. 유저 CRUD 작성
+
+``` bash
+$ yarn add bcrypt
+$ yarn add -D @types/bcrypt
+```
 

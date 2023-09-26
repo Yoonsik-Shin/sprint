@@ -2,6 +2,7 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -32,11 +33,11 @@ export class User extends SuperEntity<User> {
   @JoinColumn()
   profile: Profile;
 
-  @OneToOne(() => Job)
-  @JoinColumn()
+  @ManyToOne(() => Job, (job) => job.users, { nullable: true })
   job: Job;
 
-  @OneToOne(() => DevCareer)
-  @JoinColumn()
+  @ManyToOne(() => DevCareer, (devCareer) => devCareer.users, {
+    nullable: true,
+  })
   devCareer: DevCareer;
 }
