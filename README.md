@@ -193,3 +193,44 @@ $ yarn add bcrypt
 $ yarn add -D @types/bcrypt
 ```
 
+
+
+### AuthModule
+
+```bash
+$ nest g res auth --no-spec
+```
+
+- 세션방식 로그인 구현
+
+```bash
+$ yarn add @nestjs/passport passport passport-local express-session
+$ yarn add -D @types/passport-local @types/express-session
+```
+
+
+
+- connect-redis 설치
+
+```bash
+$ yarn add connect-redis ioredis
+```
+
+- 인메모리 저장소 변경을 위해 사용
+- v6 에서 v7되면서 문법이 많이 바뀜
+
+https://techbless.github.io/2023/04/01/express-session%EC%97%90%EC%84%9C-redis%EC%82%AC%EC%9A%A9%EC%9D%84-%EC%9C%84%ED%95%9C-connect-redis-v7-%EB%B3%80%EA%B2%BD-%EC%82%AC%ED%95%AD/
+
+
+
+❗오류발생❗
+
+- connect-redis패키지에서 오류 발생
+- 원인 : @types 패키지가 deprecated 되었는데 같이 설치되어있어서 이상한 type이 적용되어서 오류가 발생했던 것
+- 해결 : @type 패키지 삭제하고 node_modules 재설치
+
+❗오류발생❗
+
+- 세션 ID 저장 안되는 오류
+- 원인 : session cookie 설정중에 `httpOnly`와 `secure` 옵션을 `true`로 지정하여 https 환경에서만 활용가능하게 설정되어 있었음
+

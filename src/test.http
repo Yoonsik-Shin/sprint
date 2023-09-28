@@ -8,3 +8,12 @@ Content-Type: application/json
   "email": "aaa946@naver.com",
   "password": "crud1234"
 }
+
+### Login
+POST {{server}}/auth
+Content-Type: application/json
+
+{
+  "email": "aaa946@naver.com",
+  "password": "crud1234"
+}

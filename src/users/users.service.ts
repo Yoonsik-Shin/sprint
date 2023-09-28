@@ -21,7 +21,6 @@ export class UsersService {
     if (isUser) throw new ConflictException('이미 등록된 이메일입니다.');
 
     const hashedPassword = await bcrypt.hash(password, 10);
-
     const user = new User({
       email,
       password: hashedPassword,
@@ -35,6 +34,7 @@ export class UsersService {
       throw new InternalServerErrorException(
         '서버 오류로 회원가입에 실패했습니다. 다시 시도해주세요.',
       );
+
     return {
       statusCode: HttpStatus.OK,
       message: '성공적으로 회원가입 되었습니다.',
