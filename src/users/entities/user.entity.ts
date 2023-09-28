@@ -19,7 +19,7 @@ export class User extends SuperEntity<User> {
   @Column({ length: 128, unique: true })
   email: string;
 
-  @Column({ length: 128, select: false })
+  @Column({ length: 128 })
   password: string;
 
   @Column({ default: 'NOT_YET' })
