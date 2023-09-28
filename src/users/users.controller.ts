@@ -6,22 +6,31 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { Public } from '../commons/decorators/public.decorator';
+import { UserData } from '../commons/decorators/user.decorator';
+import { AuthenticatedGuard } from '../auth/guards/authenticated.guard';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   // TODO: 회원가입
+  @Public()
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
 
   // TODO: 로그인한 유저정보 불러오기
+  @Get('/req-user')
+  fetchUser(@UserData() user: typeof UserData) {
+    return user;
+  }
 
   // TODO: 프로필 업데이트
   @Patch(':id')

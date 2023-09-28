@@ -5,7 +5,7 @@ POST {{server}}/users
 Content-Type: application/json
 
 {
-  "email": "aaa946@naver.com",
+  "email": "ttt123@naver.com",
   "password": "crud1234"
 }
 
@@ -14,6 +14,9 @@ POST {{server}}/auth
 Content-Type: application/json
 
 {
-  "email": "aaa946@naver.com",
+  "email": "ttt123@naver.com",
   "password": "crud1234"
 }
+
+### 로그인한 유저 정보 불러오기
+GET {{server}}/users/req-user
