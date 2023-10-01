@@ -12,10 +12,10 @@ import { User } from './entities/user.entity';
 import { EntityManager } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { arrayToTrueObject } from '../commons/utils/arrayToTrueObject';
-import { USER_RELATIONS } from './users.enum';
+import { USER_RELATIONS } from './enum/users.enum';
 import { v4 as uuidv4 } from 'uuid';
-import { Job } from './entities/job.entity';
-import { DevCareer } from './entities/dev-career.entity';
+import { Job } from '../categories/entities/job.entity';
+import { DevCareer } from '../categories/entities/dev-career.entity';
 
 @Injectable()
 export class UsersService {
@@ -26,7 +26,7 @@ export class UsersService {
    */
   private findUserWithRelations(
     whereOption: string,
-    ...relationsArray: USER_RELATIONS[]
+    relationsArray: USER_RELATIONS[],
   ) {
     const relations = arrayToTrueObject(relationsArray);
     return this.entityManager.findOne(User, {
@@ -120,7 +120,7 @@ export class UsersService {
     const comparePassword = await this.comparePassword(updateUserDto, user);
     if (comparePassword)
       throw new BadRequestException(
-        '현재 사용중인 비밀번호와 동일합니다. 다른 비밀번호를 사용해주세요.',
+        '기존에 이용했던 비밀번호입니다. 다른 비밀번호를 사용해주세요.',
       );
     const newHashedPassword = await bcrypt.hash(updateUserDto.password, 10);
     user.password = newHashedPassword;
@@ -131,8 +131,8 @@ export class UsersService {
    * 로그인한 최신 유저정보
    * 관리자용
    */
-  findUser(id: string) {
-    return this.findUserWithRelations(id, ...Object.values(USER_RELATIONS));
+  findUser(idOrEmail: string) {
+    return this.findUserWithRelations(idOrEmail, Object.values(USER_RELATIONS));
   }
 
   findAllUsers() {

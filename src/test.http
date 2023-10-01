@@ -21,13 +21,13 @@ Content-Type: application/json
   }
 }
 
-### Login
+### 유저 로그인
 POST {{server}}/auth
 Content-Type: application/json
 
 {
   "email": "ttt123@naver.com",
-  "password": "crud1234"
+  "password": "tls009988*"
 }
 
 ### 로그인한 유저 정보 불러오기
@@ -57,3 +57,54 @@ Content-Type: application/json
 {
   "password": "tls009988*"
 }
+
+### Job 카테고리 추가
+POST {{server}}/categories/job
+Content-Type: application/json
+
+{
+  "category": "DBA"
+}
+
+### DevCareer 카테고리 추가
+POST {{server}}/categories/devCareer
+Content-Type: application/json
+
+{
+  "category": "신입 (1년미만)"
+}
+
+### Job 카테고리 전체조회
+GET {{server}}/categories/job
+
+### DevCareer 카테고리 전체조회
+GET {{server}}/categories/devCareer
+
+### Job 카테고리 수정
+PATCH {{server}}/categories/job/1
+Content-Type: application/json
+
+{
+  "category": "백엔드"
+}
+
+
+### DevCareer 카테고리 수정
+PATCH {{server}}/categories/devCareer/6
+Content-Type: application/json
+
+{
+  "category": "신입 (1년미만)"
+}
+
+### Job 카테고리 삭제
+DELETE {{server}}/categories/job/1
+
+### DevCareer 카테고리 삭제
+DELETE {{server}}/categories/devCareer/6
+
+### Job 카테고리 복원 
+GET {{server}}/categories/job/1/restore
+
+### DevCareer 카테고리 복원 
+GET {{server}}/categories/devCareer/6/restore

@@ -6,9 +6,13 @@ import { LocalStrategy } from './strategies/local.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthenticatedGuard } from './guards/authenticated.guard';
+import { UsersModule } from '../users/users.module';
 
 @Module({
-  imports: [PassportModule.register({ session: true })],
+  imports: [
+    PassportModule.register({ session: true }), //
+    UsersModule,
+  ],
   controllers: [AuthController],
   providers: [
     AuthService,

@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { PassportSerializer } from '@nestjs/passport';
-import { EntityManager } from 'typeorm';
-import { User } from '../../users/entities/user.entity';
+import { UsersService } from '../../users/users.service';
+import { USER_RELATIONS } from '../../users/enum/users.enum';
 
 @Injectable()
 export class SessionSerializer extends PassportSerializer {
-  constructor(private readonly entityManger: EntityManager) {
+  constructor(private readonly usersService: UsersService) {
     super();
   }
 
@@ -14,9 +14,7 @@ export class SessionSerializer extends PassportSerializer {
   }
 
   async deserializeUser(payload: any, done: Function) {
-    const user = await this.entityManger.findOne(User, {
-      where: { email: payload },
-    });
+    const user = await this.usersService.findUser(payload);
     done(null, user);
   }
 }

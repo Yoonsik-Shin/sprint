@@ -8,8 +8,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { CreateProfileDto } from './create-profile.dto';
-import { CreateJobDto } from './create-job.dto';
-import { CreateDevCareerDto } from './create-dev-career.dto';
+import { CreateCategoryDto } from '../../categories/dto/create-category.dto';
 
 export class CreateUserDto {
   @IsString()
@@ -37,10 +36,10 @@ export class CreateUserDto {
   profile: CreateProfileDto;
 
   @ValidateNested()
-  @Type(() => CreateJobDto)
-  job: CreateJobDto;
+  @Type(() => CreateCategoryDto)
+  job: CreateCategoryDto;
 
   @ValidateNested()
-  @Type(() => CreateDevCareerDto)
-  devCareer: CreateDevCareerDto;
+  @Type(() => CreateCategoryDto)
+  devCareer: CreateCategoryDto;
 }
