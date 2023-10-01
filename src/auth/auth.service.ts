@@ -22,7 +22,6 @@ export class AuthService {
         '비밀번호가 다릅니다. 올바른 비밀번호로 다시 시도해주세요.',
       );
 
-    const { password: _, ...userWithoutPw } = user;
-    return userWithoutPw;
+    return user;
   }
 }

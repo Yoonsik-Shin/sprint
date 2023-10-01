@@ -193,6 +193,26 @@ $ yarn add bcrypt
 $ yarn add -D @types/bcrypt
 ```
 
+```bash
+$ yarn add uuid
+$ yarn add -D @types/uuid
+```
+
+- 구현한 API
+  1. 회원가입
+  2. 로그인한 유저정보 불러오기
+  3. 프로필 업데이트
+  4. 회원탈퇴
+  5. 비밀번호 확인
+  6. 임시비밀번호 발급
+  7. 비밀번호 리셋
+  8. [관리자] 단일 유저정보 불러오기
+  9. [관리자] 모든 유저정보 불러오기
+- 유저 repository relations enum 파일작성
+- 
+
+!! 비밀번호 처리를 어디서 할 건가?
+
 
 
 ### AuthModule
@@ -234,3 +254,32 @@ https://techbless.github.io/2023/04/01/express-session%EC%97%90%EC%84%9C-redis%E
 - 세션 ID 저장 안되는 오류
 - 원인 : session cookie 설정중에 `httpOnly`와 `secure` 옵션을 `true`로 지정하여 https 환경에서만 활용가능하게 설정되어 있었음
 
+
+
+- 세션 로그인을 위한 설정
+- guard 파일 생성
+  - `authenticated.guard.ts`
+  - `login-auth.guard.ts`
+- serializer 파일 생성
+  - `session.serializer.ts`
+- strategy 파일 생성
+  - `local.strategy.ts`
+
+
+
+- 유저 커스텀 데코레이터 생성
+- public 커스텀 데코레이터 생성
+- 모든 controller에 `authenticated` 가드 설정
+
+​    
+
+### StudyModule
+
+```bash
+$ nest g res study --no-spec
+```
+
+1. Entity 작성
+   - `Study`
+   - `Recruit`
+   - `Inquiry`

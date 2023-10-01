@@ -5,5 +5,5 @@
   "editor.codeActionsOnSave": {
     "source.fixAll": true
   },
-  "cSpell.words": ["nestjs", "typeorm"]
+  "cSpell.words": ["nestjs", "typeorm", "uuidv4"]
 }

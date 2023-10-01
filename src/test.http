@@ -1,12 +1,24 @@
 @server = http://localhost:3000
 
-### Create User
+### 유저 생성
 POST {{server}}/users
 Content-Type: application/json
 
 {
   "email": "ttt123@naver.com",
   "password": "crud1234"
+}
+
+### 유저 업데이트
+PATCH {{server}}/users/req-user
+Content-Type: application/json
+
+{
+  "profile": {
+    "nickname": "테스트1",
+    "gender": false,
+    "profileImg": "/abc.png"
+  }
 }
 
 ### Login
@@ -20,3 +32,28 @@ Content-Type: application/json
 
 ### 로그인한 유저 정보 불러오기
 GET {{server}}/users/req-user
+
+### 관리자만 단일 유저정보 불러오기
+GET {{server}}/users/c4df503f-85f9-498d-9a41-d6a772757dd2
+
+### 관리자만 모든 유저정보 불러오기
+GET {{server}}/users  
+
+
+### 비밀번호 확인
+POST {{server}}/users/password/check
+Content-Type: application/json
+
+{
+  "password": "crud1234"
+}
+
+### 임시비밀번호 발급
+
+### 비밀번호 수정
+PATCH {{server}}/users/password/reset
+Content-Type: application/json
+
+{
+  "password": "tls009988*"
+}

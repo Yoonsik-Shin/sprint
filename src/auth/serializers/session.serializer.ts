@@ -17,7 +17,6 @@ export class SessionSerializer extends PassportSerializer {
     const user = await this.entityManger.findOne(User, {
       where: { email: payload },
     });
-    const { password, ...userWithoutPw } = user;
-    done(null, userWithoutPw);
+    done(null, user);
   }
 }
