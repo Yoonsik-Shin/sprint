@@ -1,8 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { EntityManager } from 'typeorm';
+import { BadRequestException, HttpStatus, Injectable } from '@nestjs/common';
 import { User } from '../users/entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { UsersService } from '../users/users.service';
+import { Response } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -19,5 +19,9 @@ export class AuthService {
       );
 
     return user;
+  }
+
+  loginOAuth(user: User, res: Response) {
+    res.redirect('https://yoonsik.shop');
   }
 }

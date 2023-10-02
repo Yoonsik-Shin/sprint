@@ -215,6 +215,10 @@ $ yarn add -D @types/uuid
 
 
 
+- devCareer와 job은 Category라는 하나의 모듈로 빼기로 결정
+
+
+
 ### AuthModule
 
 ```bash
@@ -270,8 +274,74 @@ https://techbless.github.io/2023/04/01/express-session%EC%97%90%EC%84%9C-redis%E
 - 유저 커스텀 데코레이터 생성
 - public 커스텀 데코레이터 생성
 - 모든 controller에 `authenticated` 가드 설정
+- 소셜로그인 구현
+
+```bash
+# 카카오 로그인
+$ yarn add passport-kakao
+$ yarn add -D @types/passport-kakao
+```
+
+- 프론트코드
+
+```html
+<a href="백엔드소셜로그인API">카카오로그인</a>
+```
+
+- 카카오 개발자 사이트 설정
+- 프론트엔드 도메인 입력
+
+![image-20231002015859852](README.assets/image-20231002015859852.png)
+
+- 카카오 로그인 활성화
+
+![image-20231002020024601](README.assets/image-20231002020024601.png)
+
+- redirect URI 등록 (백엔드 API)
+
+![image-20231002020107539](README.assets/image-20231002020107539.png)
+
+![image-20231002020118250](README.assets/image-20231002020118250.png)
+
+- 동의항목 설정
+
+![image-20231002020202671](README.assets/image-20231002020202671.png)
+
+
+
+!! 오류발생
+
+- 백엔드에서 redirect시에 생긴 오류
+
+![image-20231002012722385](README.assets/image-20231002012722385.png)
+
+❗❗ 배포해서 확인해봐야할듯
+
+```typescript
+// controller 
+@UseGuards(SocialAuthGuard)
+@Get(':social')
+loginOAuth(@UserData() user: User, @Res() res: Response) {
+	return this.authService.loginOAuth(user, res);
+}
+
+// service
+loginOAuth(user: User, res: Response) {
+	res.redirect('https://yoonsik.shop');
+	return user;
+}
+```
+
+
 
 ​    
+
+!! 오류발생
+
+- `@Redirect` 데코레이터의 인수로 `process.env`와 `configService.get` 모두 적용안됨
+- 임시로 하드 코딩 해놓음
+
+   
 
 ### StudyModule
 

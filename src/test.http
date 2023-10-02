@@ -27,8 +27,11 @@ Content-Type: application/json
 
 {
   "email": "ttt123@naver.com",
-  "password": "tls009988*"
+  "password": "crud1234"
 }
+
+### 유저 로그아웃
+GET {{server}}/auth
 
 ### 로그인한 유저 정보 불러오기
 GET {{server}}/users/req-user
@@ -39,6 +42,7 @@ GET {{server}}/users/c4df503f-85f9-498d-9a41-d6a772757dd2
 ### 관리자만 모든 유저정보 불러오기
 GET {{server}}/users  
 
+# ----------------------------------------------------
 
 ### 비밀번호 확인
 POST {{server}}/users/password/check
@@ -57,6 +61,8 @@ Content-Type: application/json
 {
   "password": "tls009988*"
 }
+
+# ----------------------------------------------------
 
 ### Job 카테고리 추가
 POST {{server}}/categories/job
@@ -108,3 +114,33 @@ GET {{server}}/categories/job/1/restore
 
 ### DevCareer 카테고리 복원 
 GET {{server}}/categories/devCareer/6/restore
+
+# ----------------------------------------------------
+
+### TechStack 추가
+POST {{server}}/tech-stacks
+Content-Type: application/json
+
+{
+  "stackName": "TypeScript"
+}
+
+### TechStack 전체조회
+GET {{server}}/tech-stacks
+
+### TechStack 단일조회
+GET {{server}}/tech-stacks/1
+
+### TechStack 수정
+PATCH {{server}}/tech-stacks/1
+Content-Type: application/json
+
+{
+  "stackName": "타입스크립트"
+}
+
+### TechStack 삭제
+DELETE {{server}}/tech-stacks/1
+
+### TechStack 복원
+GET {{server}}/tech-stacks/1/restore
