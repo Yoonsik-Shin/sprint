@@ -12,8 +12,8 @@ import { TechStacksModule } from './tech-stacks/tech-stacks.module';
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: [
-        '.env.local',
-        // '.env.dev',
+        // '.env.local',
+        '.env.dev',
         // '.env'
       ],
       expandVariables: true,
