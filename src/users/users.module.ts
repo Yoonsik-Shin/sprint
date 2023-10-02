@@ -8,7 +8,7 @@ import { Job } from '../categories/entities/job.entity';
 import { DevCareer } from '../categories/entities/dev-career.entity';
 import { Study } from '../studies/entities/study.entity';
 import { Recruit } from '../studies/entities/recruit.entity';
-import { TechStack } from '../commons/entities/tech-stack.entity';
+import { TechStack } from '../tech-stacks/entities/tech-stack.entity';
 import { Inquiry } from '../studies/entities/Inquiry.entity';
 
 @Module({

@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  back:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    env_file:
+      - ./.env.dev
+    restart: always
+    depends_on:
+      - mysql
+      - redis
+
+  mysql:
+    image: mysql
+    env_file:
+      - ./.env.dev
+    ports:
+      - 3307:3306
+
+  redis:
+    image: redis
+    env_file:
+      - ./.env.dev
+    ports:
+      - 6380:6379

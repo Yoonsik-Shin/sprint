@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { SuperEntity } from './super.entity';
+import { SuperEntity } from '../../commons/entities/super.entity';
 
 @Entity()
 export class TechStack extends SuperEntity<TechStack> {

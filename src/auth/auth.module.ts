@@ -7,6 +7,7 @@ import { PassportModule } from '@nestjs/passport';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthenticatedGuard } from './guards/authenticated.guard';
 import { UsersModule } from '../users/users.module';
+import { KakaoStrategy } from './strategies/social-kakao.strategy';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { UsersModule } from '../users/users.module';
   providers: [
     AuthService,
     LocalStrategy,
+    KakaoStrategy,
     SessionSerializer,
     {
       provide: APP_GUARD,

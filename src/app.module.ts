@@ -5,12 +5,17 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { StudiesModule } from './studies/studies.module';
 import { CategoriesModule } from './categories/categories.module';
+import { TechStacksModule } from './tech-stacks/tech-stacks.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: ['.env.local', '.env.development', '.env'],
+      envFilePath: [
+        // '.env.local',
+        '.env.dev',
+        // '.env'
+      ],
       expandVariables: true,
     }),
     DbModule,
@@ -18,6 +23,7 @@ import { CategoriesModule } from './categories/categories.module';
     AuthModule,
     StudiesModule,
     CategoriesModule,
+    TechStacksModule,
   ],
 })
 export class AppModule {}
