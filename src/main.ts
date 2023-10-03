@@ -11,6 +11,10 @@ async function bootstrap() {
       whitelist: true,
     }),
   );
+  app.enableCors({
+    origin: true,
+    credentials: true,
+  });
   setUpSession(app);
   await app.listen(3000);
 }

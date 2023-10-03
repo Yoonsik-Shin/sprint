@@ -61,13 +61,6 @@ export class StudiesService {
       throw new InternalServerErrorException(
         '서버 오류로 기술스택을 찾아오지 못했습니다. 다시 시도해주세요.',
       );
-    // const techStacks = createStudyDto.techStacks?.map(
-    //   (createTechStackDto: CreateTechStackDto) =>
-    //     allTechStacks.find(
-    //       (techStack: TechStack) =>
-    //         String(techStack.id) === createTechStackDto.id,
-    //     ),
-    // );
     const techStacks = await this.techStack(createStudyDto);
     const study = new Study({
       ...createStudyDto,
@@ -108,22 +101,20 @@ export class StudiesService {
   }
 
   async updateStudy(id: string, user: User, updateStudyDto: UpdateStudyDto) {
-    const { name, content, attendantsLimit, startDate, endDate } =
-      updateStudyDto;
     const targetStudy = await this.fetchStudy(id);
     if (!targetStudy)
       throw new BadRequestException('유효하지 않은 스터디 수정 요청입니다.');
     if (targetStudy.owner.id !== user.id)
       throw new UnauthorizedException('스터디 수정에 대한 권한이 없습니다.');
+    const updatedStudy = Object.entries(updateStudyDto).reduce(
+      (acc, [key, value]) => {
+        return key && (acc = { ...acc, [key]: value });
+      },
+      targetStudy,
+    );
     const techStacks = await this.techStack(updateStudyDto);
-    targetStudy.techStacks = techStacks;
-    targetStudy.recruit = { ...targetStudy.recruit, ...updateStudyDto.recruit };
-    name && (targetStudy.name = name);
-    content && (targetStudy.content = content);
-    attendantsLimit && (targetStudy.attendantsLimit = attendantsLimit);
-    startDate && (targetStudy.startDate = startDate);
-    endDate && (targetStudy.endDate = endDate);
-    return this.entityManager.save(targetStudy);
+    updatedStudy.techStacks = techStacks;
+    return this.entityManager.save(new Study(updatedStudy));
   }
 
   async softDeleteStudy(id: string, user: User) {

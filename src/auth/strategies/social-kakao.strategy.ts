@@ -23,7 +23,10 @@ export class KakaoStrategy extends PassportStrategy(Strategy, 'kakao') {
 
     // FIXME: 이메일 전송 구현
     const tempPassword = uuidv4();
-    const createUserDto: CreateUserDto = { email, password: tempPassword };
+    const createUserDto: CreateUserDto = {
+      email,
+      password: tempPassword,
+    };
     await this.usersService.createUser(createUserDto);
     validatedUser = await this.usersService.findUser(email);
     // tempPassword 이메일 전송
