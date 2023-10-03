@@ -167,10 +167,6 @@ Content-Type: application/json
     {
       "id": "2",
       "stackName": "자바스크립트"
-    },
-    {
-      "id": "3",
-      "stackName": "nest.js"
     }
   ]
 }
@@ -182,16 +178,16 @@ GET {{server}}/studies
 GET {{server}}/studies/4
 
 ### 스터디 수정
-PATCH {{server}}/studies/4
+PATCH {{server}}/studies/5
 Content-Type: application/json
 
 {
-  "name": "tttttttttt",
-  "content": " aaaaaaaa 수정 테스트입니다. 잘되나?",
-  "attendantsLimit": 2,
+  "name": "초코오오오오",
+  "content": "코코코노노노노노",
+  "attendantsLimit": 5,
   "recruit": {
-    "title": "gdasg 모집",
-    "recruitPlaceholder": "aaaaa모집조건이 매우 까다로움"
+    "title": "미미미",
+    "recruitPlaceholder": "큐큐큐"
   },
   "techStacks": [
     {
@@ -199,8 +195,8 @@ Content-Type: application/json
       "stackName": "자바스크립트"
     },
     {
-      "id": "3",
-      "stackName": "nest.js"
+      "id": "1",
+      "stackName": "타입스크립트"
     }
   ]
 }
