@@ -19,8 +19,8 @@ export function setUpSession(app: INestApplication): void {
       saveUninitialized: false,
       cookie: {
         maxAge: 1000 * 60 * 60 * 30, //
-        // httpOnly: true,
-        // secure: true
+        // sameSite: 'none',
+        // secure: true,
       },
       store: redisStore,
     }),

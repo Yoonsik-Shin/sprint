@@ -26,7 +26,7 @@ export class UsersService {
    */
   private findUserWithRelations(
     whereOption: string,
-    relationsArray: USER_RELATIONS[],
+    ...relationsArray: USER_RELATIONS[]
   ) {
     const relations = arrayToTrueObject(relationsArray);
     return this.entityManager.findOne(User, {
@@ -132,7 +132,10 @@ export class UsersService {
    * 관리자용
    */
   findUser(idOrEmail: string) {
-    return this.findUserWithRelations(idOrEmail, Object.values(USER_RELATIONS));
+    return this.findUserWithRelations(
+      idOrEmail,
+      ...Object.values(USER_RELATIONS),
+    );
   }
 
   findAllUsers() {

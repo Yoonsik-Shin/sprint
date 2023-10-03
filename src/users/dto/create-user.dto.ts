@@ -13,7 +13,7 @@ import { CreateCategoryDto } from '../../categories/dto/create-category.dto';
 export class CreateUserDto {
   @IsString()
   @IsOptional()
-  id: string;
+  id?: string;
 
   @IsString()
   @IsNotEmpty()
@@ -33,13 +33,16 @@ export class CreateUserDto {
 
   @ValidateNested()
   @Type(() => CreateProfileDto)
-  profile: CreateProfileDto;
+  @IsOptional()
+  profile?: CreateProfileDto;
 
   @ValidateNested()
   @Type(() => CreateCategoryDto)
-  job: CreateCategoryDto;
+  @IsOptional()
+  job?: CreateCategoryDto;
 
   @ValidateNested()
   @Type(() => CreateCategoryDto)
-  devCareer: CreateCategoryDto;
+  @IsOptional()
+  devCareer?: CreateCategoryDto;
 }

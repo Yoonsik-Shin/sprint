@@ -8,13 +8,13 @@ import {
 } from '@nestjs/common';
 import { EntityManager, Not, IsNull } from 'typeorm';
 import { TechStack } from './entities/tech-stack.entity';
-import { CreateTechStack } from './dto/create-tech-stack.dto';
+import { CreateTechStackDto } from './dto/create-tech-stack.dto';
 
 @Injectable()
 export class TechStacksService {
   constructor(private readonly entityManager: EntityManager) {}
 
-  private async isTechStackExist(createTechStack: CreateTechStack) {
+  private async isTechStackExist(createTechStack: CreateTechStackDto) {
     const isExist = await this.entityManager.findOneBy(TechStack, {
       stackName: createTechStack.stackName,
     });
@@ -22,7 +22,7 @@ export class TechStacksService {
     return new TechStack(createTechStack);
   }
 
-  async addTechStack(createTechStack: CreateTechStack) {
+  async addTechStack(createTechStack: CreateTechStackDto) {
     const techStack = await this.isTechStackExist(createTechStack);
     return this.entityManager.save(techStack);
   }

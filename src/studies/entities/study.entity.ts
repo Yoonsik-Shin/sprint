@@ -12,7 +12,7 @@ import {
 import { SuperEntity } from '../../commons/entities/super.entity';
 import { Recruit } from './recruit.entity';
 import { User } from '../../users/entities/user.entity';
-import { TechStack } from '../../commons/entities/tech-stack.entity';
+import { TechStack } from '../../tech-stacks/entities/tech-stack.entity';
 import { Inquiry } from './Inquiry.entity';
 
 @Entity()
@@ -29,10 +29,10 @@ export class Study extends SuperEntity<Study> {
   @Column()
   attendantsLimit: number;
 
-  @Column()
+  @Column({ nullable: true })
   startDate: Date;
 
-  @Column()
+  @Column({ nullable: true })
   endDate: Date;
 
   @OneToOne(() => Recruit, { cascade: true })
@@ -40,18 +40,18 @@ export class Study extends SuperEntity<Study> {
   recruit: Recruit;
 
   @OneToMany(() => Inquiry, (inquiry) => inquiry.study)
-  inquiries: Inquiry[];
+  inquiries?: Inquiry[];
 
   @ManyToOne(() => User, (user) => user.ownedStudies)
-  owner: User;
+  owner?: User;
 
   @ManyToMany(() => TechStack)
   @JoinTable({ name: 'study_tech_stacks' })
-  techStacks: TechStack[];
+  techStacks?: TechStack[];
 
   @ManyToMany(() => User, (user) => user.participatingStudies)
-  participants: User[];
+  participants?: User[];
 
   @ManyToMany(() => User, (user) => user.bookmarkedStudies)
-  bookmarkedUsers: User[];
+  bookmarkedUsers?: User[];
 }
