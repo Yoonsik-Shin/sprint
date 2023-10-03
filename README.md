@@ -159,6 +159,18 @@ synchronize: Boolean(process.env.DB_LOG),
 
 ​    
 
+### 7. 도커 개발환경 구축
+
+- `Dockerfile`
+  - 백엔드 코드 빌드
+- `docker-compose.yaml`
+  - 백엔드 코드
+  - mysql
+  - redis
+- `.dockerignore`
+
+
+
 ---
 
 

@@ -122,7 +122,7 @@ POST {{server}}/tech-stacks
 Content-Type: application/json
 
 {
-  "stackName": "TypeScript"
+  "stackName": "Nest.js"
 }
 
 ### TechStack 전체조회
@@ -144,3 +144,63 @@ DELETE {{server}}/tech-stacks/1
 
 ### TechStack 복원
 GET {{server}}/tech-stacks/1/restore
+
+# ----------------------------------------------------
+
+### 스터디 생성
+POST {{server}}/studies
+Content-Type: application/json
+
+{
+  "name": "맨날쉬고싶다",
+  "content": " 스터디 생성 테스트입니다. 많은 관심부탁드려요~",
+  "attendantsLimit": 5,
+  "recruit": {
+    "title": "1스터디 모집",
+    "recruitPlaceholder": "모집조건에 대해 적는 곳입니다."
+  },
+  "techStacks": [
+    {
+      "id": "1",
+      "stackName": "타입스크립트"
+    },
+    {
+      "id": "2",
+      "stackName": "자바스크립트"
+    },
+    {
+      "id": "3",
+      "stackName": "nest.js"
+    }
+  ]
+}
+
+### 스터디 전체 조회
+GET {{server}}/studies
+
+### 스터디 단일 조회
+GET {{server}}/studies/4
+
+### 스터디 수정
+PATCH {{server}}/studies/4
+Content-Type: application/json
+
+{
+  "name": "tttttttttt",
+  "content": " aaaaaaaa 수정 테스트입니다. 잘되나?",
+  "attendantsLimit": 2,
+  "recruit": {
+    "title": "gdasg 모집",
+    "recruitPlaceholder": "aaaaa모집조건이 매우 까다로움"
+  },
+  "techStacks": [
+    {
+      "id": "2",
+      "stackName": "자바스크립트"
+    },
+    {
+      "id": "3",
+      "stackName": "nest.js"
+    }
+  ]
+}

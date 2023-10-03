@@ -8,8 +8,8 @@ import {
   Delete,
 } from '@nestjs/common';
 import { TechStacksService } from './tech-stacks.service';
-import { CreateTechStack } from './dto/create-tech-stack.dto';
 import { UpdateTechStackDto } from './dto/update-tech-stack.dto';
+import { CreateTechStackDto } from './dto/create-tech-stack.dto';
 
 @Controller('tech-stacks')
 export class TechStacksController {
@@ -18,7 +18,7 @@ export class TechStacksController {
   // TODO: [관리자] 기술스택 추가
   // FIXME: 관리자 권한 추가하기
   @Post()
-  addTechStack(@Body() createTechStack: CreateTechStack) {
+  addTechStack(@Body() createTechStack: CreateTechStackDto) {
     return this.techStacksService.addTechStack(createTechStack);
   }
 

@@ -101,7 +101,7 @@ export class CategoriesService {
     const updateResult = await this.entityManager.save(isDeleted);
     if (!updateResult)
       throw new InternalServerErrorException(
-        '서버 오류로 카테고리 복원에 실패했습니다. 다시 시도해주세요.',
+        '서버 오류로 카테고리 복구에 실패했습니다. 다시 시도해주세요.',
       );
     return {
       statusCode: HttpStatus.OK,
