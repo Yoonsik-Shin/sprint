@@ -1,3 +1,4 @@
+import { FilesService } from './../files/files.service';
 import {
   ConflictException,
   HttpStatus,
@@ -20,7 +21,10 @@ import { EmailService } from '../email/email.service';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly entityManager: EntityManager) {}
+  constructor(
+    private readonly entityManager: EntityManager,
+    private readonly filesService: FilesService,
+  ) {}
 
   /**
    * 유저
@@ -62,7 +66,18 @@ export class UsersService {
     };
   }
 
-  async updateUser(user: User, updateUserDto: UpdateUserDto) {
+  async updateUser(
+    image: Express.Multer.File,
+    user: User,
+    updateUserDto: UpdateUserDto,
+  ) {
+    if (image) {
+      const hasProfileImage = user.profile.profileImg;
+      hasProfileImage &&
+        (await this.filesService.deleteS3File(hasProfileImage));
+      const { url } = await this.filesService.uploadFile(image);
+      updateUserDto.profile.profileImg = url;
+    }
     user.profile = new Profile(updateUserDto.profile);
     user.job = new Job(updateUserDto.job);
     user.devCareer = new DevCareer(updateUserDto.devCareer);
@@ -74,7 +89,6 @@ export class UsersService {
     return {
       statusCode: HttpStatus.OK,
       message: '성공적으로 업데이트 되었습니다.',
-      user: updatedUser,
     };
   }
 

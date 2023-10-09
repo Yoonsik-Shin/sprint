@@ -387,3 +387,18 @@ $ yarn add @liaoliaots/nestjs-redis ioredis
 
 - https://www.npmjs.com/package/@liaoliaots/nestjs-redis
 - `app.module.ts`에 Redis Module 설정
+
+
+
+### FileMoudule
+
+```bash
+$ yarn add aws-sdk
+
+# 파일 크기 줄이려면
+$ yarn add @aws-sdk/client-s3
+
+$ yarn add -D @types/multer
+```
+
+- env 설정

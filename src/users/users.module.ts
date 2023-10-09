@@ -11,6 +11,7 @@ import { Recruit } from '../studies/entities/recruit.entity';
 import { TechStack } from '../tech-stacks/entities/tech-stack.entity';
 import { Inquiry } from '../studies/entities/Inquiry.entity';
 import { EmailService } from '../email/email.service';
+import { FilesModule } from '../files/files.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { EmailService } from '../email/email.service';
       TechStack,
       Inquiry,
     ]),
+    FilesModule,
   ],
   controllers: [UsersController],
   providers: [UsersService, EmailService],
