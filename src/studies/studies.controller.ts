@@ -11,7 +11,6 @@ import { StudiesService } from './studies.service';
 import { UserData } from '../commons/decorators/user.decorator';
 import { User } from '../users/entities/user.entity';
 import { CreateStudyDto } from './dto/create-study.dto';
-import { Public } from '../commons/decorators/public.decorator';
 import { UpdateStudyDto } from './dto/update-study.dto';
 
 @Controller('studies')
@@ -57,6 +56,7 @@ export class StudiesController {
   }
 
   // TODO: 스터디 복구
+  @Get(':id/restore')
   restoreStudy(@Param('id') id: string, @UserData() user: User) {
     return this.studiesService.restoreStudy(id, user);
   }

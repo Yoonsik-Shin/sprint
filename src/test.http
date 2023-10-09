@@ -200,3 +200,9 @@ Content-Type: application/json
     }
   ]
 }
+
+### 스터디 삭제
+DELETE {{server}}/studies/5
+
+### 스터디 복원
+GET {{server}}/studies/5/restore

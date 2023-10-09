@@ -1,3 +1,4 @@
+import { EmailService } from './../email/email.service';
 import {
   ConflictException,
   HttpStatus,
@@ -19,7 +20,10 @@ import { DevCareer } from '../categories/entities/dev-career.entity';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly entityManager: EntityManager) {}
+  constructor(
+    private readonly entityManager: EntityManager,
+    private readonly emailService: EmailService,
+  ) {}
 
   /**
    * 유저
@@ -108,10 +112,9 @@ export class UsersService {
     };
   }
 
-  // FIXME: 이메일 전송 구현
   issueTempPassword(user: User) {
     const tempPassword = uuidv4();
-    // tempPassword 이메일 전송
+    this.emailService.sendToken(user.email);
     user.password = tempPassword;
     return this.entityManager.save(user);
   }

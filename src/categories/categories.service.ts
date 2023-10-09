@@ -16,7 +16,10 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 export class CategoriesService {
   constructor(private readonly entityManager: EntityManager) {}
 
-  private async isCategoryExist(entity, dto: CreateCategoryDto) {
+  private async isCategoryExist(
+    entity: typeof Job | typeof DevCareer,
+    dto: CreateCategoryDto,
+  ) {
     const isExist = await this.entityManager.findOneBy(entity, {
       category: dto.category,
     });
