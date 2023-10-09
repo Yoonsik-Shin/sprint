@@ -1,8 +1,8 @@
-import { UsersService } from './../users/users.service';
 import {
   Injectable,
   BadRequestException,
   UnprocessableEntityException,
+  InternalServerErrorException,
   HttpStatus,
 } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
@@ -13,6 +13,7 @@ import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import { EntityManager } from 'typeorm';
 import { User } from '../users/entities/user.entity';
 import { EmailTokenDto } from './email.dto.ts/email-token.dto';
+import { UsersService } from '../users/users.service';
 
 interface EmailOptions {
   to: string;
@@ -98,7 +99,13 @@ export class EmailService {
     const user = await this.entityManager.findOne(User, {
       where: [{ email }, { emailVerified: email }],
     });
-    this.usersService.issueTempPassword(user);
+    const issueTempPasswordSuccess =
+      await this.usersService.issueTempPassword(user);
+    if (!issueTempPasswordSuccess)
+      throw new InternalServerErrorException(
+        '서버 오류로 임시 비밀번호 발급에 실패했습니다. 다시 시도해주세요.',
+      );
+    this.sendToken(user.email);
     return {
       statusCode: HttpStatus.OK,
       message: '정상적으로 처리되었습니다.',

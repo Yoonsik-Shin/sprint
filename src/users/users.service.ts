@@ -1,4 +1,3 @@
-import { EmailService } from './../email/email.service';
 import {
   ConflictException,
   HttpStatus,
@@ -17,13 +16,11 @@ import { USER_RELATIONS } from './enum/users.enum';
 import { v4 as uuidv4 } from 'uuid';
 import { Job } from '../categories/entities/job.entity';
 import { DevCareer } from '../categories/entities/dev-career.entity';
+import { EmailService } from '../email/email.service';
 
 @Injectable()
 export class UsersService {
-  constructor(
-    private readonly entityManager: EntityManager,
-    private readonly emailService: EmailService,
-  ) {}
+  constructor(private readonly entityManager: EntityManager) {}
 
   /**
    * 유저
@@ -114,7 +111,6 @@ export class UsersService {
 
   issueTempPassword(user: User) {
     const tempPassword = uuidv4();
-    this.emailService.sendToken(user.email);
     user.password = tempPassword;
     return this.entityManager.save(user);
   }
