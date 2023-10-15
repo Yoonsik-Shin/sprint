@@ -29,8 +29,6 @@ export class StudiesController {
     return this.studiesService.createStudy(user, createStudyDto);
   }
 
-  // TODO: 스터디 전체 조회
-  // FIXME: 관리자 권한 부여
   @Get('/offset')
   fetchStudiesWithOffset(
     @Query('limit') limit = 20, // 한번에 몇개 보내줄건가?
@@ -39,6 +37,8 @@ export class StudiesController {
     return this.studiesService.fetchStudiesWithOffset(offset, limit);
   }
 
+  // TODO: 스터디 전체 조회
+  // FIXME: 관리자 권한 부여
   @Get()
   fetchAllStudies() {
     return this.studiesService.fetchAllStudies();

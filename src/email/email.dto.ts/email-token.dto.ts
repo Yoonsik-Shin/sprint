@@ -6,5 +6,6 @@ export class EmailTokenDto {
   email?: string;
 
   @IsString()
-  token: string;
+  @IsOptional()
+  token?: string;
 }

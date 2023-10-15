@@ -32,6 +32,7 @@ import { SocketModule } from './socket/socket.module';
       }),
       inject: [ConfigService],
     }),
+    MongoModule,
     DbModule,
     UsersModule,
     AuthModule,
@@ -40,7 +41,6 @@ import { SocketModule } from './socket/socket.module';
     TechStacksModule,
     EmailModule,
     FilesModule,
-    MongoModule,
     SocketModule,
   ],
 })
