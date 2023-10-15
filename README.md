@@ -402,3 +402,24 @@ $ yarn add -D @types/multer
 ```
 
 - env 설정
+
+
+
+### MongoModule
+
+```bash
+$ yarn add @nestjs/mongoose mongoose
+```
+
+- mongo.module.ts 설정
+
+​    
+
+### SocketModule
+
+```bash
+$ yarn add @nestjs/websockets @nestjs/platform-socket.io socket.io
+```
+
+- socket.module.ts 설정
+

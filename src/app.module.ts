@@ -9,6 +9,8 @@ import { TechStacksModule } from './tech-stacks/tech-stacks.module';
 import { EmailModule } from './email/email.module';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { FilesModule } from './files/files.module';
+import { MongoModule } from './mongo/mongo.module';
+import { SocketModule } from './socket/socket.module';
 
 @Module({
   imports: [
@@ -38,6 +40,8 @@ import { FilesModule } from './files/files.module';
     TechStacksModule,
     EmailModule,
     FilesModule,
+    MongoModule,
+    SocketModule,
   ],
 })
 export class AppModule {}

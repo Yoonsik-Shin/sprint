@@ -26,7 +26,7 @@ POST {{server}}/auth
 Content-Type: application/json
 
 {
-  "email": "ttt123@naver.com",
+  "email": "abc1234@gmail.com",
   "password": "crud1234"
 }
 
@@ -152,21 +152,17 @@ POST {{server}}/studies
 Content-Type: application/json
 
 {
-  "name": "맨날쉬고싶다",
-  "content": " 스터디 생성 테스트입니다. 많은 관심부탁드려요~",
-  "attendantsLimit": 5,
+  "name": "호호호호호호호",
+  "content": "만관부만관부만관부만관부",
+  "attendantsLimit": 3,
   "recruit": {
-    "title": "1스터디 모집",
+    "title": "키키키키키키",
     "recruitPlaceholder": "모집조건에 대해 적는 곳입니다."
   },
   "techStacks": [
     {
       "id": "1",
       "stackName": "타입스크립트"
-    },
-    {
-      "id": "2",
-      "stackName": "자바스크립트"
     }
   ]
 }
@@ -174,20 +170,23 @@ Content-Type: application/json
 ### 스터디 전체 조회
 GET {{server}}/studies
 
+### 스터디 조회 (offset)
+GET {{server}}/studies/offset?limit=20&offset=20
+
 ### 스터디 단일 조회
 GET {{server}}/studies/4
 
 ### 스터디 수정
-PATCH {{server}}/studies/5
+PATCH {{server}}/studies/6
 Content-Type: application/json
 
 {
-  "name": "초코오오오오",
-  "content": "코코코노노노노노",
+  "name": "미미미미미미초코오오오오",
+  "content": "피피피피피피코코코노노노노노",
   "attendantsLimit": 5,
   "recruit": {
-    "title": "미미미",
-    "recruitPlaceholder": "큐큐큐"
+    "title": "ㅇ유유유융미미미",
+    "recruitPlaceholder": "큐바바바바바큐큐"
   },
   "techStacks": [
     {
@@ -206,3 +205,15 @@ DELETE {{server}}/studies/5
 
 ### 스터디 복원
 GET {{server}}/studies/5/restore
+
+### 스터디 모집종료
+GET {{server}}/studies/6/close
+
+### 스터디 문의 생성
+POST {{server}}/studies/7/inquiry
+Content-Type: application/json
+
+{
+  "title": "이 스터디 뭐하는 스터디인가요?",
+  "contents": "공지만 봐서는 도대체 뭘하는 스터디인지 잘 모르겠어서 문의드려요. 스터디 뭐하는 스터디인가요??"
+}

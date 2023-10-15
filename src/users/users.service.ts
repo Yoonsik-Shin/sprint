@@ -17,7 +17,6 @@ import { USER_RELATIONS } from './enum/users.enum';
 import { v4 as uuidv4 } from 'uuid';
 import { Job } from '../categories/entities/job.entity';
 import { DevCareer } from '../categories/entities/dev-career.entity';
-import { EmailService } from '../email/email.service';
 
 @Injectable()
 export class UsersService {
@@ -29,7 +28,7 @@ export class UsersService {
   /**
    * 유저
    */
-  private findUserWithRelations(
+  findUserWithRelations(
     whereOption: string,
     ...relationsArray: USER_RELATIONS[]
   ) {
