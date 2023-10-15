@@ -8,4 +8,7 @@ export class TechStack extends SuperEntity<TechStack> {
 
   @Column()
   stackName: string;
+
+  @Column()
+  stackImg: string;
 }

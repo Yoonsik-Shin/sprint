@@ -79,7 +79,11 @@ export class EmailService {
       throw new BadRequestException(
         '입력하신 이메일과 일치하는 회원정보가 없습니다.',
       );
-    return this.sendToken(email);
+    this.sendToken(email);
+    return {
+      statusCode: HttpStatus.OK,
+      email,
+    };
   }
 
   tempPasswordAnotherEmailSend({ email }: EmailTokenDto) {

@@ -30,6 +30,15 @@ Content-Type: application/json
   "password": "crud1234"
 }
 
+### 유저 로그인
+POST {{server}}/auth
+Content-Type: application/json
+
+{
+  "email": "ttt123@naver.com",
+  "password": "crud1234"
+}
+
 ### 유저 로그아웃
 GET {{server}}/auth
 

@@ -46,8 +46,7 @@ export class AuthController {
   @Get()
   logout(@Session() session: Record<string, any>, @Res() res: Response) {
     session.destroy(() => {
-      // FIXME: 어디로 리다이렉트할지 수정필요
-      // res.redirect('/');
+      res.redirect('/login');
     });
   }
 }

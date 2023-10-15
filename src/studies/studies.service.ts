@@ -34,7 +34,6 @@ export class StudiesService {
         '서버 오류로 기술스택을 찾아오지 못했습니다. 다시 시도해주세요.',
       );
     const techStacks = dto.techStacks?.map(
-      // (techStackDto: CreateTechStackDto | UpdateTechStackDto) =>
       (techStackDto: CreateTechStackDto | UpdateTechStackDto) =>
         allTechStacks.find(
           (techStack: TechStack) => String(techStack.id) === techStackDto.id,
@@ -210,7 +209,14 @@ export class StudiesService {
     const study = await this.findStudyWithRelations(studyId);
     const inquiry = new Inquiry({ ...createInquiryDto, study, user });
     const isSuccess = await this.entityManager.save(inquiry);
-    return;
+    if (!isSuccess)
+      throw new InternalServerErrorException(
+        '서버 오류로 질의 업데이트에 실패했습니다. 다시 시도해주세요.',
+      );
+    return {
+      statusCode: HttpStatus.OK,
+      message: '성공적으로 등록 되었습니다.',
+    };
   }
 
   async fetchOneStudyInquires(studyId: string) {
@@ -232,13 +238,27 @@ export class StudiesService {
   }
 
   async deleteStudyInquiry(studyId: string, inquiryId: string, user: User) {
-    // const inquiry = await this.entityManager.findOne(Inquiry, {
-    //   where: { id: inquiryId },
-    // });
-    // for (const userInquiry of user.inquiries) {
-    //   if (inquiry.id === userInquiry.id)
-    // }
-    // inquiry;
+    const inquiry = await this.entityManager.findOne(Inquiry, {
+      where: { id: inquiryId },
+    });
+    if (!inquiry)
+      throw new BadRequestException('삭제하려는 질의가 존재하지 않습니다.');
+    const isExist = user.inquiries.find((userInquiry) => {
+      userInquiry.id === inquiry.id;
+    });
+    if (!isExist)
+      throw new UnauthorizedException('질의 삭제에 대한 권한이 없습니다.');
+    const isDeleted = await this.entityManager.softDelete(Inquiry, {
+      where: { id: inquiryId },
+    });
+    if (!isDeleted.affected)
+      throw new InternalServerErrorException(
+        '서버 오류로 질의 삭제에 실패했습니다. 다시 시도해주세요.',
+      );
+    return {
+      statusCode: HttpStatus.OK,
+      message: '성공적으로 삭제 되었습니다.',
+    };
   }
 
   fetchStudyInquiriesAll() {

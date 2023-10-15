@@ -13,6 +13,7 @@ services:
     depends_on:
       - mysql
       - redis
+      - mongo
 
   mysql:
     image: mysql
