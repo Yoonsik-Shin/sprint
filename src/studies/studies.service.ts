@@ -94,10 +94,7 @@ export class StudiesService {
     return this.entityManager.findAndCount(Study, {
       skip: offset,
       take: limit,
-      relations: arrayToTrueObject([
-        STUDY_RELATIONS.Recruit,
-        STUDY_RELATIONS.TechStacks,
-      ]),
+      relations: arrayToTrueObject(Object.values(STUDY_RELATIONS)),
     });
   }
 
