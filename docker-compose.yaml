@@ -21,6 +21,13 @@ services:
     ports:
       - 3307:3306
 
+  mongo:
+    image: mongo
+    env_file:
+      - ./.env.dev
+    ports:
+      - 27017:27017
+
   redis:
     image: redis
     env_file:

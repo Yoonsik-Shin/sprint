@@ -6,6 +6,8 @@ import {
   Patch,
   Param,
   Delete,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -13,6 +15,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { Public } from '../commons/decorators/public.decorator';
 import { UserData } from '../commons/decorators/user.decorator';
 import { User } from './entities/user.entity';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('users')
 export class UsersController {
@@ -32,9 +35,14 @@ export class UsersController {
   }
 
   // TODO: 프로필 업데이트
+  @UseInterceptors(FileInterceptor('image'))
   @Patch('req-user')
-  update(@UserData() user: User, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.updateUser(user, updateUserDto);
+  update(
+    @UploadedFile() image: Express.Multer.File,
+    @UserData() user: User,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    return this.usersService.updateUser(image, user, updateUserDto);
   }
 
   // TODO: 회원탈퇴

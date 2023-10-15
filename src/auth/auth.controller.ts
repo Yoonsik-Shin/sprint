@@ -15,6 +15,7 @@ import { Public } from '../commons/decorators/public.decorator';
 import { SocialAuthGuard } from './guards/social-auth.guard';
 import { User } from '../users/entities/user.entity';
 import { Response } from 'express';
+import { NOT_YET } from '../commons/constants/constants';
 
 @Controller('auth')
 export class AuthController {
@@ -24,11 +25,11 @@ export class AuthController {
   @Public()
   @UseGuards(LoginAuthGuard)
   @Post()
-  login(@UserData() user: typeof UserData) {
+  login(@UserData('emailVerified') emailVerified: string) {
     return {
       statusCode: HttpStatus.OK,
       message: '성공적으로 로그인되었습니다.',
-      user,
+      firstLogin: emailVerified !== NOT_YET ? false : true,
     };
   }
 

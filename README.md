@@ -365,3 +365,61 @@ $ nest g res study --no-spec
    - `Study`
    - `Recruit`
    - `Inquiry`
+
+
+
+
+
+### EmailModule
+
+```bash
+$ nest g res email
+$ yarn add nodemailer
+$ yarn add -D @types/nodemailer
+```
+
+- `redis` 연결
+- `ioredis`와 모듈형태로 redis를 사용할 수 있게주는 `@liaoliaots/nestjs-redis` 라이브러리 사용
+
+```bash
+$ yarn add @liaoliaots/nestjs-redis ioredis
+```
+
+- https://www.npmjs.com/package/@liaoliaots/nestjs-redis
+- `app.module.ts`에 Redis Module 설정
+
+
+
+### FileMoudule
+
+```bash
+$ yarn add aws-sdk
+
+# 파일 크기 줄이려면
+$ yarn add @aws-sdk/client-s3
+
+$ yarn add -D @types/multer
+```
+
+- env 설정
+
+
+
+### MongoModule
+
+```bash
+$ yarn add @nestjs/mongoose mongoose
+```
+
+- mongo.module.ts 설정
+
+​    
+
+### SocketModule
+
+```bash
+$ yarn add @nestjs/websockets @nestjs/platform-socket.io socket.io
+```
+
+- socket.module.ts 설정
+
