@@ -6,7 +6,7 @@ import { Category } from './category.interface';
 @Entity()
 export class DevCareer extends SuperEntity<DevCareer> implements Category {
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
 
   @Column()
   category: string;

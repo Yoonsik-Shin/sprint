@@ -58,7 +58,7 @@ export class CategoriesService {
     return this.entityManager.find(decidedEntity);
   }
 
-  fetchCategory(type: string, id: string) {
+  fetchCategory(type: string, id: number) {
     const decidedEntity = this.decideEntity(type);
     return this.entityManager.findOne(decidedEntity, {
       where: { id },
@@ -67,7 +67,7 @@ export class CategoriesService {
 
   async updateCategory(
     type: string,
-    id: string,
+    id: number,
     updateCategoryDto: UpdateCategoryDto,
   ) {
     const category = await this.fetchCategory(type, id);
@@ -92,7 +92,7 @@ export class CategoriesService {
     };
   }
 
-  async restoreCategory(type: string, id: string) {
+  async restoreCategory(type: string, id: number) {
     const category = this.decideEntity(type);
     const isDeleted = await this.entityManager.findOne(category, {
       where: { id, deletedAt: Not(IsNull()) },

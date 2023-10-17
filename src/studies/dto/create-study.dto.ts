@@ -25,13 +25,13 @@ export class CreateStudyDto extends SuperCreateDto {
   @IsNotEmpty()
   attendantsLimit: number;
 
-  @IsDate()
-  @IsNotEmpty()
+  // @IsDate()
+  // @IsNotEmpty()
   @IsOptional()
   startDate?: Date;
 
-  @IsDate()
-  @IsNotEmpty()
+  // @IsDate()
+  // @IsNotEmpty()
   @IsOptional()
   endDate?: Date;
 

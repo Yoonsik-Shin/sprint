@@ -36,7 +36,7 @@ export class StudiesService {
     const techStacks = dto.techStacks?.map(
       (techStackDto: CreateTechStackDto | UpdateTechStackDto) =>
         allTechStacks.find(
-          (techStack: TechStack) => String(techStack.id) === techStackDto.id,
+          (techStack: TechStack) => techStack.id === techStackDto.id,
         ),
     );
     return techStacks;
@@ -76,7 +76,7 @@ export class StudiesService {
     return this.entityManager.save(study);
   }
 
-  findStudyWithRelations(id: string, ...relationsArray: STUDY_RELATIONS[]) {
+  findStudyWithRelations(id: number, ...relationsArray: STUDY_RELATIONS[]) {
     const relations = arrayToTrueObject(relationsArray);
     return this.entityManager.findOne(Study, {
       where: { id },
@@ -101,7 +101,7 @@ export class StudiesService {
     if (filter) {
       const techStackIds = filter.split(',');
       const where = techStackIds.map((techStackId) => ({
-        techStacks: { id: techStackId },
+        techStacks: { id: Number(techStackId) },
       }));
       return this.entityManager.findAndCount(Study, { where, ...otherOptions });
     }
@@ -109,7 +109,7 @@ export class StudiesService {
     return this.entityManager.findAndCount(Study, { ...otherOptions });
   }
 
-  fetchStudy(id: string) {
+  fetchStudy(id: number) {
     return this.findStudyWithRelations(
       id,
       STUDY_RELATIONS.Owner,
@@ -119,7 +119,7 @@ export class StudiesService {
     );
   }
 
-  async updateStudy(id: string, user: User, updateStudyDto: UpdateStudyDto) {
+  async updateStudy(id: number, user: User, updateStudyDto: UpdateStudyDto) {
     const targetStudy = await this.fetchStudy(id);
     if (!targetStudy)
       throw new BadRequestException('유효하지 않은 스터디 수정 요청입니다.');
@@ -136,7 +136,7 @@ export class StudiesService {
     return this.entityManager.save(new Study(updatedStudy));
   }
 
-  async softDeleteStudy(id: string, user: User) {
+  async softDeleteStudy(id: number, user: User) {
     const targetStudy = await this.findStudyWithRelations(
       id,
       STUDY_RELATIONS.Owner,
@@ -156,10 +156,11 @@ export class StudiesService {
     };
   }
 
-  async restoreStudy(id: string, user: User) {
+  async restoreStudy(id: number, user: User) {
     const deletedStudy = await this.entityManager.findOne(Study, {
       where: { id, deletedAt: Not(IsNull()) },
       withDeleted: true,
+      relations: { owner: true },
     });
     if (!deletedStudy)
       throw new BadRequestException('유효하지 않은 스터디 복구 요청입니다.');
@@ -177,22 +178,20 @@ export class StudiesService {
     };
   }
 
-  async bookmarkStudy(studyId: string, user: User) {
-    console.log('✔️  user.bookmarkedStudies:', user.bookmarkedStudies);
+  async bookmarkStudy(studyId: number, user: User) {
     const study = await this.findStudyWithRelations(studyId);
     const bookmarkedStudy = user.bookmarkedStudies.find(
-      (bookmarkStudy) => bookmarkStudy.id.toString() === studyId,
+      (bookmarkStudy) => bookmarkStudy.id === studyId,
     );
-    console.log('✔️  bookmarkedStudy:', bookmarkedStudy);
     !bookmarkedStudy && user.bookmarkedStudies.push(study);
     bookmarkedStudy &&
       (user.bookmarkedStudies = user.bookmarkedStudies.filter(
-        (bookmarkStudy) => bookmarkStudy.id.toString() !== studyId,
+        (bookmarkStudy) => bookmarkStudy.id !== studyId,
       ));
     return this.entityManager.save(user);
   }
 
-  async acceptStudyAttend(fromUser: User, studyId: string) {
+  async acceptStudyAttend(fromUser: User, studyId: number) {
     const study = await this.findStudyWithRelations(
       studyId,
       STUDY_RELATIONS.Participants,
@@ -205,7 +204,7 @@ export class StudiesService {
     return this.entityManager.save(user);
   }
 
-  async closeStudyRecruit(id: string, user: User) {
+  async closeStudyRecruit(id: number, user: User) {
     const study = await this.findStudyWithRelations(
       id,
       STUDY_RELATIONS.Owner,
@@ -229,7 +228,7 @@ export class StudiesService {
 
   async createStudyInquiry(
     createInquiryDto: CreateInquiryDto,
-    studyId: string,
+    studyId: number,
     user: User,
   ) {
     const study = await this.findStudyWithRelations(studyId);
@@ -245,7 +244,7 @@ export class StudiesService {
     };
   }
 
-  async fetchOneStudyInquires(studyId: string) {
+  async fetchOneStudyInquires(studyId: number) {
     const study = await this.findStudyWithRelations(
       studyId,
       STUDY_RELATIONS.Inquiries,
@@ -254,8 +253,8 @@ export class StudiesService {
   }
 
   async updateStudyInquiry(
-    studyId: string,
-    inquiryId: string,
+    studyId: number,
+    inquiryId: number,
     updateInquiryDto: UpdateStudyDto,
   ) {
     const prevInquiry = await this.fetchOneStudyInquiry(studyId, inquiryId);
@@ -263,7 +262,7 @@ export class StudiesService {
     return this.entityManager.save(inquiry);
   }
 
-  async deleteStudyInquiry(studyId: string, inquiryId: string, user: User) {
+  async deleteStudyInquiry(studyId: number, inquiryId: number, user: User) {
     const inquiry = await this.entityManager.findOne(Inquiry, {
       where: { id: inquiryId },
     });
@@ -291,12 +290,17 @@ export class StudiesService {
     return this.entityManager.find(Inquiry);
   }
 
-  async fetchOneStudyInquiry(studyId: string, inquiryId: string) {
+  async fetchOneStudyInquiry(studyId: number, inquiryId: number) {
     const study = await this.findStudyWithRelations(
       studyId,
       STUDY_RELATIONS.Inquiries,
     );
-    return study.inquiries[inquiryId];
+    console.log('ttt', study.inquiries);
+    const targetInquiry = study.inquiries.find(
+      (inquiry) => inquiry.id === inquiryId,
+    );
+    console.log('✔️  targetInquiry:', targetInquiry);
+    return targetInquiry;
   }
 }
 

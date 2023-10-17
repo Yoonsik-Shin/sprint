@@ -79,7 +79,7 @@ POST {{server}}/categories/job
 Content-Type: application/json
 
 {
-  "category": "DBA"
+  "category": "개그맨"
 }
 
 ### DevCareer 카테고리 추가
@@ -87,7 +87,7 @@ POST {{server}}/categories/devCareer
 Content-Type: application/json
 
 {
-  "category": "신입 (1년미만)"
+  "category": "초고인물"
 }
 
 ### Job 카테고리 전체조회
@@ -106,7 +106,7 @@ Content-Type: application/json
 
 
 ### DevCareer 카테고리 수정
-PATCH {{server}}/categories/devCareer/6
+PATCH {{server}}/categories/devCareer/1
 Content-Type: application/json
 
 {
@@ -117,13 +117,13 @@ Content-Type: application/json
 DELETE {{server}}/categories/job/1
 
 ### DevCareer 카테고리 삭제
-DELETE {{server}}/categories/devCareer/6
+DELETE {{server}}/categories/devCareer/1
 
 ### Job 카테고리 복원 
 GET {{server}}/categories/job/1/restore
 
 ### DevCareer 카테고리 복원 
-GET {{server}}/categories/devCareer/6/restore
+GET {{server}}/categories/devCareer/1/restore
 
 # ----------------------------------------------------
 
@@ -132,7 +132,7 @@ POST {{server}}/tech-stacks
 Content-Type: application/json
 
 {
-  "stackName": "Nest.js"
+  "stackName": ""
 }
 
 ### TechStack 전체조회
@@ -162,18 +162,16 @@ POST {{server}}/studies
 Content-Type: application/json
 
 {
-  "name": "호호호호호호호",
-  "content": "만관부만관부만관부만관부",
-  "attendantsLimit": 3,
+  "name": "테테스스스트",
+  "content": "트트트트관만관부",
+  "attendantsLimit": 5,
   "recruit": {
-    "title": "키키키키키키",
+    "title": "ㅇ림ㄴ일키키",
     "recruitPlaceholder": "모집조건에 대해 적는 곳입니다."
   },
   "techStacks": [
-    {
-      "id": "1",
-      "stackName": "타입스크립트"
-    }
+    { "id": 1 },
+    { "id": 2 }
   ]
 }
 
@@ -187,10 +185,10 @@ GET {{server}}/studies/offset?limit=20&offset=0
 GET {{server}}/studies/offset?limit=20&offset=0&filter=1,2
 
 ### 스터디 단일 조회
-GET {{server}}/studies/5
+GET {{server}}/studies/4
 
 ### 스터디 수정
-PATCH {{server}}/studies/8
+PATCH {{server}}/studies/4
 Content-Type: application/json
 
 {
@@ -202,34 +200,50 @@ Content-Type: application/json
     "recruitPlaceholder": "큐바바바바바큐큐"
   },
   "techStacks": [
-    {
-      "id": "2",
-      "stackName": "typescript"
-    },
-    {
-      "id": "1",
-      "stackName": "javascript"
-    }
+    { "id": 1 }
   ]
 }
 
 ### 스터디 삭제
-DELETE {{server}}/studies/5
+DELETE {{server}}/studies/4
 
 ### 스터디 복원
-GET {{server}}/studies/5/restore
+GET {{server}}/studies/4/restore
 
 ### 스터디 북마크 
-GET {{server}}/studies/5/bookmark
+GET {{server}}/studies/4/bookmark
 
 ### 스터디 모집종료
-GET {{server}}/studies/6/close
+GET {{server}}/studies/4/close
 
+
+### 스터디 문의 ---------------------------------------------
 ### 스터디 문의 생성
-POST {{server}}/studies/7/inquiry
+POST {{server}}/studies/4/inquiry
 Content-Type: application/json
 
 {
   "title": "이 스터디 뭐하는 스터디인가요?",
   "contents": "공지만 봐서는 도대체 뭘하는 스터디인지 잘 모르겠어서 문의드려요. 스터디 뭐하는 스터디인가요??"
 }
+
+### 단일 스터디 문의 전체조회
+GET {{server}}/studies/4/inquiry
+
+### 스터디 문의 수정
+PATCH {{server}}/studies/4/inquiry/2
+Content-Type: application/json
+
+{
+  "title": "수정테스트",
+  "contents": "테테테테테"
+}
+
+### 스터디 문의 삭제
+DELETE {{server}}/studies/7/inquiry/1
+
+### 스터디 문의 전체조회
+GET {{server}}/studies/0/inquiries
+
+### 스터디 문의 단일조회
+GET {{server}}/studies/4/inquiry/2

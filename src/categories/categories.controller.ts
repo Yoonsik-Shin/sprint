@@ -34,7 +34,7 @@ export class CategoriesController {
   // TODO: [관리자] Job/DevCareer 카테고리 단일조회
   // FIXME: 관리자 권한 추가하기
   @Get(':type/:id')
-  fetchCategory(@Param('type') type: string, @Param('id') id: string) {
+  fetchCategory(@Param('type') type: string, @Param('id') id: number) {
     return this.categoriesService.fetchCategory(type, id);
   }
 
@@ -43,7 +43,7 @@ export class CategoriesController {
   @Patch(':type/:id')
   updateCategory(
     @Param('type') type: string,
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Body() updateCategoryDto: UpdateCategoryDto,
   ) {
     return this.categoriesService.updateCategory(type, id, updateCategoryDto);
@@ -59,7 +59,7 @@ export class CategoriesController {
   // TODO: [관리자] Job/DevCareer 삭제한 카테고리 복원
   // FIXME: 관리자 권한 추가하기
   @Get(':type/:id/restore')
-  restoreCategory(@Param('type') type: string, @Param('id') id: string) {
+  restoreCategory(@Param('type') type: string, @Param('id') id: number) {
     return this.categoriesService.restoreCategory(type, id);
   }
 }

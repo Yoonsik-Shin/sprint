@@ -31,11 +31,11 @@ export class TechStacksService {
     return this.entityManager.find(TechStack);
   }
 
-  fetchTechStack(id: string) {
+  fetchTechStack(id: number) {
     return this.entityManager.findOneBy(TechStack, { id });
   }
 
-  async updateTechStack(id: string, updateTechStackDto: UpdateTechStackDto) {
+  async updateTechStack(id: number, updateTechStackDto: UpdateTechStackDto) {
     const techStack = await this.fetchTechStack(id);
     if (techStack.stackName === updateTechStackDto.stackName)
       throw new ConflictException(
@@ -45,7 +45,7 @@ export class TechStacksService {
     return this.entityManager.save(techStack);
   }
 
-  async deleteTechStack(id: string) {
+  async deleteTechStack(id: number) {
     const deleteResult = await this.entityManager.softDelete(TechStack, { id });
     if (!deleteResult.affected)
       throw new InternalServerErrorException(
@@ -57,7 +57,7 @@ export class TechStacksService {
     };
   }
 
-  async restoreTechStack(id: string) {
+  async restoreTechStack(id: number) {
     const isDeleted = await this.entityManager.findOne(TechStack, {
       where: { id, deletedAt: Not(IsNull()) },
       withDeleted: true,

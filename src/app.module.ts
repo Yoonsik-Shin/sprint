@@ -18,8 +18,8 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: [
-        '.env.local',
-        // '.env.dev',
+        // '.env.local',
+        '.env.dev',
         // '.env'
       ],
       expandVariables: true,

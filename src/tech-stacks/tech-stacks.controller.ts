@@ -32,7 +32,7 @@ export class TechStacksController {
   // TODO: [관리자] 기술스택 단일조회
   // FIXME: 관리자 권한 추가하기
   @Get(':id')
-  fetchTechStack(@Param('id') id: string) {
+  fetchTechStack(@Param('id') id: number) {
     return this.techStacksService.fetchTechStack(id);
   }
 
@@ -40,7 +40,7 @@ export class TechStacksController {
   // FIXME: 관리자 권한 추가하기
   @Patch(':id')
   updateTechStack(
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Body() updateTechStackDto: UpdateTechStackDto,
   ) {
     return this.techStacksService.updateTechStack(id, updateTechStackDto);
@@ -49,14 +49,14 @@ export class TechStacksController {
   // TODO: [관리자] 기술스택 삭제
   // FIXME: 관리자 권한 추가하기
   @Delete(':id')
-  deleteTechStack(@Param('id') id: string) {
+  deleteTechStack(@Param('id') id: number) {
     return this.techStacksService.deleteTechStack(id);
   }
 
   // TODO: [관리자] 기술스택 삭제한 카테고리 복원
   // FIXME: 관리자 권한 추가하기
   @Get(':id/restore')
-  restoreTechStack(@Param('id') id: string) {
+  restoreTechStack(@Param('id') id: number) {
     return this.techStacksService.restoreTechStack(id);
   }
 }

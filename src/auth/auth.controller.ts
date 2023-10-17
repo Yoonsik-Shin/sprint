@@ -1,3 +1,4 @@
+import { ConfigService } from '@nestjs/config';
 import {
   Controller,
   Post,
@@ -19,7 +20,10 @@ import { NOT_YET } from '../commons/constants/constants';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly config: ConfigService,
+  ) {}
 
   // TODO: 로그인
   @Public()
@@ -46,7 +50,7 @@ export class AuthController {
   @Get()
   logout(@Session() session: Record<string, any>, @Res() res: Response) {
     session.destroy(() => {
-      res.redirect('/login');
+      res.redirect(`${this.config.get('BASE_URL')}/login`);
     });
   }
 }

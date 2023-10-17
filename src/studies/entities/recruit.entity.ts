@@ -5,7 +5,7 @@ import { Study } from './study.entity';
 @Entity()
 export class Recruit extends SuperEntity<Recruit> {
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
 
   @Column()
   title: string;
