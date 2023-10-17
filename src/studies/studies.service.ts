@@ -91,27 +91,22 @@ export class StudiesService {
   }
 
   async fetchStudiesWithOffset(offset: number, limit: number, filter: string) {
-    if (filter) {
-      const techStackIds = filter.split(',');
-      const whereOptions = techStackIds.map((techStackId) => ({
-        techStacks: {
-          id: techStackId,
-        },
-      }));
-      console.log('✔️  whereOptions:', whereOptions);
-      return this.entityManager.findAndCount(Study, {
-        where: whereOptions,
-        skip: offset,
-        take: limit,
-        relations: arrayToTrueObject(Object.values(STUDY_RELATIONS)),
-      });
-    }
-
-    return this.entityManager.findAndCount(Study, {
+    const otherOptions: OffsetFindOptions = {
       skip: offset,
       take: limit,
       relations: arrayToTrueObject(Object.values(STUDY_RELATIONS)),
-    });
+      order: { id: 'DESC' },
+    };
+
+    if (filter) {
+      const techStackIds = filter.split(',');
+      const where = techStackIds.map((techStackId) => ({
+        techStacks: { id: techStackId },
+      }));
+      return this.entityManager.findAndCount(Study, { where, ...otherOptions });
+    }
+
+    return this.entityManager.findAndCount(Study, { ...otherOptions });
   }
 
   fetchStudy(id: string) {
@@ -304,3 +299,10 @@ export class StudiesService {
     return study.inquiries[inquiryId];
   }
 }
+
+type OffsetFindOptions = {
+  skip: number;
+  take: number;
+  relations: {};
+  order: {};
+};
