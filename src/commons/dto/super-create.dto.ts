@@ -1,7 +1,7 @@
-import { IsString, IsOptional } from 'class-validator';
+import { IsOptional, IsNumber } from 'class-validator';
 
 export class SuperCreateDto {
-  @IsString()
+  @IsNumber()
   @IsOptional()
-  id: string;
+  id: number;
 }

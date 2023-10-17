@@ -47,14 +47,14 @@ export class StudiesController {
 
   // TODO: 스터디 단일 조회
   @Get(':id')
-  fetchStudy(@Param('id') id: string) {
+  fetchStudy(@Param('id') id: number) {
     return this.studiesService.fetchStudy(id);
   }
 
   // TODO: 스터디 수정
   @Patch(':id')
   updateStudy(
-    @Param('id') id: string,
+    @Param('id') id: number,
     @UserData() user: User,
     @Body() updateStudyDto: UpdateStudyDto,
   ) {
@@ -63,13 +63,13 @@ export class StudiesController {
 
   // TODO: 스터디 삭제
   @Delete(':id')
-  deleteStudy(@Param('id') id: string, @UserData() user: User) {
+  deleteStudy(@Param('id') id: number, @UserData() user: User) {
     return this.studiesService.softDeleteStudy(id, user);
   }
 
   // TODO: 스터디 복구
   @Get(':id/restore')
-  restoreStudy(@Param('id') id: string, @UserData() user: User) {
+  restoreStudy(@Param('id') id: number, @UserData() user: User) {
     return this.studiesService.restoreStudy(id, user);
   }
 
@@ -77,7 +77,7 @@ export class StudiesController {
    *  스터디 북마크
    */
   @Get(':studyId/bookmark')
-  bookmarkStudy(@Param('studyId') studyId: string, @UserData() user: User) {
+  bookmarkStudy(@Param('studyId') studyId: number, @UserData() user: User) {
     return this.studiesService.bookmarkStudy(studyId, user);
   }
 
@@ -88,14 +88,14 @@ export class StudiesController {
   // TODO: 스터디 신청 수락
   @Post('attend/accept')
   acceptStudyAttend(
-    @Body() { fromUser, studyId }: { fromUser: User; studyId: string },
+    @Body() { fromUser, studyId }: { fromUser: User; studyId: number },
   ) {
     return this.studiesService.acceptStudyAttend(fromUser, studyId);
   }
 
   // TODO: 스터디 모집종료
   @Get(':id/close')
-  closeStudyRecruit(@Param('id') id: string, @UserData() user: User) {
+  closeStudyRecruit(@Param('id') id: number, @UserData() user: User) {
     return this.studiesService.closeStudyRecruit(id, user);
   }
 
@@ -106,7 +106,7 @@ export class StudiesController {
   @Post(':studyId/inquiry')
   createStudyInquiry(
     @Body() createInquiryDto: CreateInquiryDto,
-    @Param('studyId') studyId: string,
+    @Param('studyId') studyId: number,
     @UserData() user: User,
   ) {
     return this.studiesService.createStudyInquiry(
@@ -118,15 +118,15 @@ export class StudiesController {
 
   // TODO: 단일 스터디 문의 전체 조회
   @Get(':studyId/inquiry')
-  fetchOneStudyInquires(@Param('studyId') studyId: string) {
+  fetchOneStudyInquires(@Param('studyId') studyId: number) {
     return this.studiesService.fetchOneStudyInquires(studyId);
   }
 
   // TODO: 스터디 문의 수정
   @Patch(':studyId/inquiry/:inquiryId')
   updateStudyInquiry(
-    @Param('studyId') studyId: string,
-    @Param('inquiryId') inquiryId: string,
+    @Param('studyId') studyId: number,
+    @Param('inquiryId') inquiryId: number,
     @Body() updateInquiryDto: UpdateInquiryDto,
   ) {
     return this.studiesService.updateStudyInquiry(
@@ -139,8 +139,8 @@ export class StudiesController {
   // TODO: 스터디 문의 삭제
   @Delete(':studyId/inquiry/:inquiryId')
   deleteStudyInquiry(
-    @Param('studyId') studyId: string,
-    @Param('inquiryId') inquiryId: string,
+    @Param('studyId') studyId: number,
+    @Param('inquiryId') inquiryId: number,
     @UserData() user: User,
   ) {
     return this.studiesService.deleteStudyInquiry(studyId, inquiryId, user);
@@ -148,7 +148,8 @@ export class StudiesController {
 
   // TODO: 스터디 문의 전체 조회
   // FIXME: 관리자 권한
-  @Get('inquiry')
+  // URL 구분하려면 id 붙혀야함
+  @Get(':id/inquiries')
   fetchAllStudyInquiries() {
     return this.studiesService.fetchStudyInquiriesAll();
   }
@@ -157,8 +158,8 @@ export class StudiesController {
   // FIXME: 관리자 권한 추가하기
   @Get(':studyId/inquiry/:inquiryId')
   fetchOneStudyInquiry(
-    @Param('studyId') studyId: string,
-    @Param('inquiryId') inquiryId: string,
+    @Param('studyId') studyId: number,
+    @Param('inquiryId') inquiryId: number,
   ) {
     return this.studiesService.fetchOneStudyInquiry(studyId, inquiryId);
   }

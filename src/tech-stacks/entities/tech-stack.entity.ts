@@ -4,7 +4,7 @@ import { SuperEntity } from '../../commons/entities/super.entity';
 @Entity()
 export class TechStack extends SuperEntity<TechStack> {
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
 
   @Column()
   stackName: string;
