@@ -11,6 +11,7 @@ import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { FilesModule } from './files/files.module';
 import { MongoModule } from './mongo/mongo.module';
 import { SocketModule } from './socket/socket.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { SocketModule } from './socket/socket.module';
       }),
       inject: [ConfigService],
     }),
+    EventEmitterModule.forRoot(),
     MongoModule,
     DbModule,
     UsersModule,

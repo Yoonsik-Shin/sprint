@@ -6,7 +6,7 @@ import {
   BadRequestException,
   HttpStatus,
 } from '@nestjs/common';
-import { EntityManager, IsNull, Not } from 'typeorm';
+import { EntityManager, FindOperator, In, IsNull, Not } from 'typeorm';
 import { TechStack } from '../tech-stacks/entities/tech-stack.entity';
 import { CreateStudyDto } from './dto/create-study.dto';
 import { User } from '../users/entities/user.entity';
@@ -90,7 +90,23 @@ export class StudiesService {
     });
   }
 
-  fetchStudiesWithOffset(offset: number, limit: number) {
+  async fetchStudiesWithOffset(offset: number, limit: number, filter: string) {
+    if (filter) {
+      const techStackIds = filter.split(',');
+      const whereOptions = techStackIds.map((techStackId) => ({
+        techStacks: {
+          id: techStackId,
+        },
+      }));
+      console.log('✔️  whereOptions:', whereOptions);
+      return this.entityManager.findAndCount(Study, {
+        where: whereOptions,
+        skip: offset,
+        take: limit,
+        relations: arrayToTrueObject(Object.values(STUDY_RELATIONS)),
+      });
+    }
+
     return this.entityManager.findAndCount(Study, {
       skip: offset,
       take: limit,
@@ -126,7 +142,10 @@ export class StudiesService {
   }
 
   async softDeleteStudy(id: string, user: User) {
-    const targetStudy = await this.entityManager.findOneBy(Study, { id });
+    const targetStudy = await this.findStudyWithRelations(
+      id,
+      STUDY_RELATIONS.Owner,
+    );
     if (!targetStudy)
       throw new BadRequestException('유효하지 않은 스터디 삭제 요청입니다.');
     if (targetStudy.owner.id !== user.id)
@@ -161,6 +180,21 @@ export class StudiesService {
       statusCode: HttpStatus.OK,
       message: `${id}/${deletedStudy.name} 스터디 복구에 성공했습니다.`,
     };
+  }
+
+  async bookmarkStudy(studyId: string, user: User) {
+    console.log('✔️  user.bookmarkedStudies:', user.bookmarkedStudies);
+    const study = await this.findStudyWithRelations(studyId);
+    const bookmarkedStudy = user.bookmarkedStudies.find(
+      (bookmarkStudy) => bookmarkStudy.id.toString() === studyId,
+    );
+    console.log('✔️  bookmarkedStudy:', bookmarkedStudy);
+    !bookmarkedStudy && user.bookmarkedStudies.push(study);
+    bookmarkedStudy &&
+      (user.bookmarkedStudies = user.bookmarkedStudies.filter(
+        (bookmarkStudy) => bookmarkStudy.id.toString() !== studyId,
+      ));
+    return this.entityManager.save(user);
   }
 
   async acceptStudyAttend(fromUser: User, studyId: string) {

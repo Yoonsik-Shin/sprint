@@ -5,6 +5,7 @@ import {
   Post,
   BadRequestException,
 } from '@nestjs/common';
+import { OnEvent } from '@nestjs/event-emitter';
 import { EmailService } from './email.service';
 import { UserData } from '../commons/decorators/user.decorator';
 import { User } from '../users/entities/user.entity';
@@ -67,8 +68,20 @@ export class EmailController {
 
   // TODO: 비밀번호 재설정 토큰 인증
   @Public()
-  @Post()
+  @Post('verify')
   tempPasswordEmailTokenVerify(@Body() emailToken: EmailTokenDto) {
     return this.emailService.tempPasswordEmailTokenVerify(emailToken);
+  }
+
+  // TODO: userService로 부터 임시 비밀번호 받기
+  @OnEvent('tempPassword')
+  receiveTempPassword({
+    user,
+    tempPassword,
+  }: {
+    user: User;
+    tempPassword: string;
+  }) {
+    return this.emailService.receiveTempPassword(user, tempPassword);
   }
 }

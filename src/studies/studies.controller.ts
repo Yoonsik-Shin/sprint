@@ -33,8 +33,9 @@ export class StudiesController {
   fetchStudiesWithOffset(
     @Query('limit') limit = 20, // 한번에 몇개 보내줄건가?
     @Query('offset') offset = 0, // 어디서부터 시작할건가? - 이것만 조절하면됨
+    @Query('filter') filter: string,
   ) {
-    return this.studiesService.fetchStudiesWithOffset(offset, limit);
+    return this.studiesService.fetchStudiesWithOffset(offset, limit, filter);
   }
 
   // TODO: 스터디 전체 조회
@@ -70,6 +71,14 @@ export class StudiesController {
   @Get(':id/restore')
   restoreStudy(@Param('id') id: string, @UserData() user: User) {
     return this.studiesService.restoreStudy(id, user);
+  }
+
+  /**
+   *  스터디 북마크
+   */
+  @Get(':studyId/bookmark')
+  bookmarkStudy(@Param('studyId') studyId: string, @UserData() user: User) {
+    return this.studiesService.bookmarkStudy(studyId, user);
   }
 
   /**

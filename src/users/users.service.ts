@@ -17,12 +17,14 @@ import { USER_RELATIONS } from './enum/users.enum';
 import { v4 as uuidv4 } from 'uuid';
 import { Job } from '../categories/entities/job.entity';
 import { DevCareer } from '../categories/entities/dev-career.entity';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class UsersService {
   constructor(
     private readonly entityManager: EntityManager,
     private readonly filesService: FilesService,
+    private eventEmitter: EventEmitter2,
   ) {}
 
   /**
@@ -122,10 +124,18 @@ export class UsersService {
     };
   }
 
-  issueTempPassword(user: User) {
-    const tempPassword = uuidv4();
-    user.password = tempPassword;
-    return this.entityManager.save(user);
+  async issueTempPassword(user: User) {
+    const uuid = uuidv4();
+    const tempPassword = uuid.substring(0, 8) + uuid.substring(24, 32);
+    const hashedTempPassword = await bcrypt.hash(tempPassword, 10);
+    user.password = hashedTempPassword;
+    await this.entityManager.save(user);
+    this.eventEmitter.emit('tempPassword', { user, tempPassword });
+    return {
+      statusCode: HttpStatus.OK,
+      message:
+        '성공적으로 임시비밀번호가 발급되었습니다. 이메일을 확인해주세요.',
+    };
   }
 
   async resetPassword(updateUserDto: UpdateUserDto, user: User) {

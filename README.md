@@ -37,7 +37,7 @@ $ npx husky add .husky/pre-push '명령어'
 
 - `.husky/pre-push` 파일 작성
 
-​    
+​
 
 ### 2. 환경변수 설정 추가
 
@@ -47,8 +47,6 @@ $ yarn add @nestjs/config
 
 - app.module.ts 파일 수정
 
-
-
 > ❗커밋 실수❗
 
 - git rebase로 수정함
@@ -57,7 +55,7 @@ $ yarn add @nestjs/config
 $ git rebase -i HEAD~돌아가고싶은커밋수
 ```
 
-​    
+​
 
 ### 3. prettier, eslint, vscode editor 설정
 
@@ -69,7 +67,7 @@ $ yarn add -D eslint
 $ yarn add -D prettier
 ```
 
-​    
+​
 
 ### 4. tsconfig.json에 경로설정
 
@@ -78,15 +76,15 @@ $ yarn add -D prettier
 ```json
 // tsconfig.json
 {
-	"compilerOptions": {
-		"paths": {
-      		"..": ["./src/*"]
-    	}
-	}
+  "compilerOptions": {
+    "paths": {
+      "..": ["./src/*"]
+    }
+  }
 }
 ```
 
-​    
+​
 
 ### 5. DB 연결
 
@@ -97,14 +95,12 @@ $ nest g mo db
 
 - db.modules.ts에 Typeorm 설정추가
 
-
-
->  ❗오류 발생 ❗
+> ❗오류 발생 ❗
 
 - 자동으로 코드 컨벤션 안바뀌는 오류
 - 원인 : `.vscode/settings.json`에서 `setting.json`으로 오타냄
 
-​     
+​
 
 ### 6. typeorm migration 설정 추가
 
@@ -119,17 +115,15 @@ $ yarn add dotenv
 
 ```json
 {
-    "scripts": {
-    	"tom": "ts-node ./node_modules/typeorm/cli",
-    	"tom:create": "npm run tom migration:create ./migrations/Mig",
-    	"tom:gen": "npm run tom migration:generate ./migrations/Mig -- -d ./src/db/type-orm.config.ts",
-    	"tom:up": "npm run tom migration:run -- -d ./src/db/type-orm.config.ts",
-    	"tom:down": "npm run tom migration:revert -- -d ./src/db/type-orm.config.ts"
-    }
+  "scripts": {
+    "tom": "ts-node ./node_modules/typeorm/cli",
+    "tom:create": "npm run tom migration:create ./migrations/Mig",
+    "tom:gen": "npm run tom migration:generate ./migrations/Mig -- -d ./src/db/type-orm.config.ts",
+    "tom:up": "npm run tom migration:run -- -d ./src/db/type-orm.config.ts",
+    "tom:down": "npm run tom migration:revert -- -d ./src/db/type-orm.config.ts"
+  }
 }
 ```
-
-
 
 > ❗오류발생❗
 
@@ -157,7 +151,7 @@ $ yarn add dotenv
 synchronize: Boolean(process.env.DB_LOG),
 ```
 
-​    
+​
 
 ### 7. 도커 개발환경 구축
 
@@ -169,11 +163,7 @@ synchronize: Boolean(process.env.DB_LOG),
   - redis
 - `.dockerignore`
 
-
-
 ---
-
-
 
 ## 코드 구현
 
@@ -185,7 +175,7 @@ $ nest g res users --no-spec
 
 1. Entity 작성
 
-   - `User` 
+   - `User`
    - `Profile`
    - `Job`
    - `DevCareer`
@@ -200,7 +190,7 @@ $ nest g res users --no-spec
 
 3. 유저 CRUD 작성
 
-``` bash
+```bash
 $ yarn add bcrypt
 $ yarn add -D @types/bcrypt
 ```
@@ -221,15 +211,11 @@ $ yarn add -D @types/uuid
   8. [관리자] 단일 유저정보 불러오기
   9. [관리자] 모든 유저정보 불러오기
 - 유저 repository relations enum 파일작성
-- 
+-
 
 !! 비밀번호 처리를 어디서 할 건가?
 
-
-
 - devCareer와 job은 Category라는 하나의 모듈로 빼기로 결정
-
-
 
 ### AuthModule
 
@@ -244,8 +230,6 @@ $ yarn add @nestjs/passport passport passport-local express-session
 $ yarn add -D @types/passport-local @types/express-session
 ```
 
-
-
 - connect-redis 설치
 
 ```bash
@@ -256,8 +240,6 @@ $ yarn add connect-redis ioredis
 - v6 에서 v7되면서 문법이 많이 바뀜
 
 https://techbless.github.io/2023/04/01/express-session%EC%97%90%EC%84%9C-redis%EC%82%AC%EC%9A%A9%EC%9D%84-%EC%9C%84%ED%95%9C-connect-redis-v7-%EB%B3%80%EA%B2%BD-%EC%82%AC%ED%95%AD/
-
-
 
 ❗오류발생❗
 
@@ -270,8 +252,6 @@ https://techbless.github.io/2023/04/01/express-session%EC%97%90%EC%84%9C-redis%E
 - 세션 ID 저장 안되는 오류
 - 원인 : session cookie 설정중에 `httpOnly`와 `secure` 옵션을 `true`로 지정하여 https 환경에서만 활용가능하게 설정되어 있었음
 
-
-
 - 세션 로그인을 위한 설정
 - guard 파일 생성
   - `authenticated.guard.ts`
@@ -279,9 +259,8 @@ https://techbless.github.io/2023/04/01/express-session%EC%97%90%EC%84%9C-redis%E
 - serializer 파일 생성
   - `session.serializer.ts`
 - strategy 파일 생성
+
   - `local.strategy.ts`
-
-
 
 - 유저 커스텀 데코레이터 생성
 - public 커스텀 데코레이터 생성
@@ -319,8 +298,6 @@ $ yarn add -D @types/passport-kakao
 
 ![image-20231002020202671](README.assets/image-20231002020202671.png)
 
-
-
 !! 오류발생
 
 - 백엔드에서 redirect시에 생긴 오류
@@ -330,7 +307,7 @@ $ yarn add -D @types/passport-kakao
 ❗❗ 배포해서 확인해봐야할듯
 
 ```typescript
-// controller 
+// controller
 @UseGuards(SocialAuthGuard)
 @Get(':social')
 loginOAuth(@UserData() user: User, @Res() res: Response) {
@@ -344,16 +321,12 @@ loginOAuth(user: User, res: Response) {
 }
 ```
 
-
-
-​    
+​
 
 !! 오류발생
 
 - `@Redirect` 데코레이터의 인수로 `process.env`와 `configService.get` 모두 적용안됨
 - 임시로 하드 코딩 해놓음
-
-   
 
 ### StudyModule
 
@@ -365,10 +338,6 @@ $ nest g res study --no-spec
    - `Study`
    - `Recruit`
    - `Inquiry`
-
-
-
-
 
 ### EmailModule
 
@@ -388,8 +357,6 @@ $ yarn add @liaoliaots/nestjs-redis ioredis
 - https://www.npmjs.com/package/@liaoliaots/nestjs-redis
 - `app.module.ts`에 Redis Module 설정
 
-
-
 ### FileMoudule
 
 ```bash
@@ -403,8 +370,6 @@ $ yarn add -D @types/multer
 
 - env 설정
 
-
-
 ### MongoModule
 
 ```bash
@@ -413,7 +378,7 @@ $ yarn add @nestjs/mongoose mongoose
 
 - mongo.module.ts 설정
 
-​    
+​
 
 ### SocketModule
 
@@ -423,3 +388,8 @@ $ yarn add @nestjs/websockets @nestjs/platform-socket.io socket.io
 
 - socket.module.ts 설정
 
+### EventEmitter
+
+```bash
+$ yarn add @nestjs/event-emitter
+```
