@@ -109,11 +109,27 @@ export class EmailService {
       throw new InternalServerErrorException(
         '서버 오류로 임시 비밀번호 발급에 실패했습니다. 다시 시도해주세요.',
       );
-    this.sendToken(user.email);
+    await this.redis.del(email);
     return {
       statusCode: HttpStatus.OK,
       message: '정상적으로 처리되었습니다.',
     };
+  }
+
+  receiveTempPassword(user: User, tempPassword: string) {
+    this.sendTempPassword(user.email, tempPassword);
+  }
+
+  private sendTempPassword(email: string, tempPassword: string) {
+    const mailOptions: EmailOptions = {
+      to: email,
+      subject: '임시비밀번호 발급',
+      html: `
+        <div>임시비밀번호</div>
+        <div>${tempPassword}</div>
+      `,
+    };
+    return this.transporter.sendMail(mailOptions);
   }
 
   private createToken(num: number) {

@@ -30,6 +30,7 @@ Content-Type: application/json
   "password": "crud1234"
 }
 
+
 ### 유저 로그인
 POST {{server}}/auth
 Content-Type: application/json
@@ -180,13 +181,16 @@ Content-Type: application/json
 GET {{server}}/studies
 
 ### 스터디 조회 (offset)
-GET {{server}}/studies/offset?limit=20&offset=20
+GET {{server}}/studies/offset?limit=20&offset=0
+
+### 스터디 조회 (offset + filter)
+GET {{server}}/studies/offset?limit=20&offset=0&filter=1,2
 
 ### 스터디 단일 조회
-GET {{server}}/studies/4
+GET {{server}}/studies/5
 
 ### 스터디 수정
-PATCH {{server}}/studies/6
+PATCH {{server}}/studies/8
 Content-Type: application/json
 
 {
@@ -200,11 +204,11 @@ Content-Type: application/json
   "techStacks": [
     {
       "id": "2",
-      "stackName": "자바스크립트"
+      "stackName": "typescript"
     },
     {
       "id": "1",
-      "stackName": "타입스크립트"
+      "stackName": "javascript"
     }
   ]
 }
@@ -214,6 +218,9 @@ DELETE {{server}}/studies/5
 
 ### 스터디 복원
 GET {{server}}/studies/5/restore
+
+### 스터디 북마크 
+GET {{server}}/studies/5/bookmark
 
 ### 스터디 모집종료
 GET {{server}}/studies/6/close
