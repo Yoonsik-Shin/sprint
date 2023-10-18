@@ -179,7 +179,10 @@ export class StudiesService {
   }
 
   async bookmarkStudy(studyId: number, user: User) {
-    const study = await this.findStudyWithRelations(studyId);
+    const study = await this.findStudyWithRelations(
+      studyId,
+      STUDY_RELATIONS.TechStacks,
+    );
     const bookmarkedStudy = user.bookmarkedStudies.find(
       (bookmarkStudy) => bookmarkStudy.id === studyId,
     );
