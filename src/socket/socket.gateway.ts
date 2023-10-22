@@ -43,4 +43,39 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
   studyRequestReject(client: Socket, payload: NotificationStudyPayload) {
     return this.socketService.studyRequestReject(client, payload, this.server);
   }
+
+  // 스터디룸 채팅방 생성
+  @SubscribeMessage('createChatRoom')
+  createChatRoom(client: Socket, payload: ChatMsgPayload) {
+    return this.socketService.createChatRoom(client, payload, this.server);
+  }
+
+  // 스터디방 입장시
+  @SubscribeMessage('enterStudyRoom')
+  async enterStudyRoom(client: Socket, payload: EnterStudyRoomPayload) {
+    return this.socketService.enterStudyRoom(client, payload, this.server);
+  }
+
+  // 스터디방 퇴장시
+  @SubscribeMessage('leaveStudyRoom')
+  leaveStudyRoom(client: Socket, payload) {
+    return this.socketService.leaveStudyRoom(client, payload, this.server);
+  }
+
+  // 스터디 채팅 입력시
+  @SubscribeMessage('sendChatMsg')
+  sendChatMsg(client: Socket, payload: ChatMsgPayload) {}
 }
+
+export type EnterStudyRoomPayload = {
+  userEmail: string;
+  userId: string;
+  studyId: number;
+  studyName: string;
+};
+
+export type ChatMsgPayload = {
+  userId: string;
+  studyId: number;
+  chatRoomName: string;
+};

@@ -18,10 +18,20 @@ import { STUDY_RELATIONS } from './enum/study.enum';
 import { UpdateTechStackDto } from '../tech-stacks/dto/update-tech-stack.dto';
 import { CreateTechStackDto } from '../tech-stacks/dto/create-tech-stack.dto';
 import { CreateInquiryDto } from './dto/create-inquiry.dto';
+import { StudyMember } from '../mongo/schemas';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { StudyRequestStatus } from '../mongo/schemas/study-request-status';
 
 @Injectable()
 export class StudiesService {
-  constructor(private readonly entityManager: EntityManager) {}
+  constructor(
+    @InjectModel(StudyMember.name)
+    private readonly studyMemberModel: Model<StudyMember>,
+    @InjectModel(StudyRequestStatus.name)
+    private readonly StudyRequestStatusModel: Model<StudyRequestStatus>,
+    private readonly entityManager: EntityManager,
+  ) {}
 
   private getTechStack() {
     return this.entityManager.find(TechStack);
@@ -73,7 +83,17 @@ export class StudiesService {
       bookmarkedUsers: null,
     });
     delete study.bookmarkedUsers;
-    return this.entityManager.save(study);
+
+    const restoredStudy = await this.entityManager.save(study);
+
+    // mongoDB에 스터디원 정보저장
+    this.studyMemberModel.create({
+      userId: user.id,
+      studyId: restoredStudy.id,
+      status: 'false',
+    });
+
+    return restoredStudy;
   }
 
   findStudyWithRelations(id: number, ...relationsArray: STUDY_RELATIONS[]) {
@@ -116,6 +136,7 @@ export class StudiesService {
       STUDY_RELATIONS.Inquiries,
       STUDY_RELATIONS.TechStacks,
       STUDY_RELATIONS.Participants,
+      STUDY_RELATIONS.Recruit,
     );
   }
 
@@ -194,6 +215,16 @@ export class StudiesService {
     return this.entityManager.save(user);
   }
 
+  async checkStudyAttendRequest(id: number, user: User) {
+    const isRequested = await this.StudyRequestStatusModel.find().where({
+      studyId: id,
+      userId: user.id,
+    });
+    if (isRequested)
+      throw new BadRequestException('이미 신청 요청이 되어있는 스터디입니다.');
+    return true;
+  }
+
   async acceptStudyAttend(fromUser: User, studyId: number) {
     const study = await this.findStudyWithRelations(
       studyId,
@@ -203,6 +234,11 @@ export class StudiesService {
       where: { id: fromUser.id },
       relations: { participatingStudies: true },
     });
+    const isRequested = await this.StudyRequestStatusModel.deleteOne({
+      studyId: study.id,
+      userId: user.id,
+    });
+
     user.participatingStudies.push(study);
     return this.entityManager.save(user);
   }

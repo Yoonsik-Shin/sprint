@@ -84,6 +84,11 @@ export class StudiesController {
   /**
    * 스터디 신청
    */
+  // 스터디 신청여부 확인
+  @Get('attend/check/:id')
+  checkStudyAttendRequest(@Param('id') id: number, @UserData() user: User) {
+    return this.studiesService.checkStudyAttendRequest(id, user);
+  }
 
   // TODO: 스터디 신청 수락
   @Post('attend/accept')
