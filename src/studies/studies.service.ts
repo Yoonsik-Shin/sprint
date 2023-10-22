@@ -1,4 +1,4 @@
-import { Inquiry } from './entities/Inquiry.entity';
+import { Inquiry } from './entities/inquiry.entity';
 import {
   Injectable,
   InternalServerErrorException,
@@ -22,6 +22,8 @@ import { StudyMember } from '../mongo/schemas';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { StudyRequestStatus } from '../mongo/schemas/study-request-status';
+import { CreateInquiryResponseDto } from './dto/create-inquiry-response.dto';
+import { InquiryResponse } from './entities/inquiry-response.entity';
 
 @Injectable()
 export class StudiesService {
@@ -291,6 +293,20 @@ export class StudiesService {
     return study.inquiries;
   }
 
+  async responseStudyInquiry(
+    createInquiryResponseDto: CreateInquiryResponseDto,
+    inquiryId: number,
+  ) {
+    const inquiry = await this.entityManager.findOne(Inquiry, {
+      where: { id: inquiryId },
+    });
+    const inquiryResponse = new InquiryResponse({
+      ...createInquiryResponseDto,
+    });
+    inquiry.inquiryResponse = inquiryResponse;
+    return this.entityManager.save(inquiry);
+  }
+
   async updateStudyInquiry(
     studyId: number,
     inquiryId: number,
@@ -334,11 +350,9 @@ export class StudiesService {
       studyId,
       STUDY_RELATIONS.Inquiries,
     );
-    console.log('ttt', study.inquiries);
     const targetInquiry = study.inquiries.find(
       (inquiry) => inquiry.id === inquiryId,
     );
-    console.log('✔️  targetInquiry:', targetInquiry);
     return targetInquiry;
   }
 }

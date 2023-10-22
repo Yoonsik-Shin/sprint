@@ -16,7 +16,7 @@ import { Job } from '../../categories/entities/job.entity';
 import { DevCareer } from '../../categories/entities/dev-career.entity';
 import { Study } from '../../studies/entities/study.entity';
 import { TechStack } from '../../tech-stacks/entities/tech-stack.entity';
-import { Inquiry } from '../../studies/entities/Inquiry.entity';
+import { Inquiry } from '../../studies/entities/inquiry.entity';
 
 @Entity()
 export class User extends SuperEntity<User> {

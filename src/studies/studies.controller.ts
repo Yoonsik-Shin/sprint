@@ -15,6 +15,7 @@ import { CreateStudyDto } from './dto/create-study.dto';
 import { UpdateStudyDto } from './dto/update-study.dto';
 import { CreateInquiryDto } from './dto/create-inquiry.dto';
 import { UpdateInquiryDto } from './dto/update-inquiry.dto';
+import { CreateInquiryResponseDto } from './dto/create-inquiry-response.dto';
 
 @Controller('studies')
 export class StudiesController {
@@ -120,6 +121,22 @@ export class StudiesController {
       user,
     );
   }
+
+  //TODO: 스터디 문의 답변달기
+  @Post(':studyId/inquiry/:inquiryId')
+  responseStudyInquiry(
+    @Body() createInquiryResponseDto: CreateInquiryResponseDto,
+    @Param('inquiryId') inquiryId: number,
+  ) {
+    return this.studiesService.responseStudyInquiry(
+      createInquiryResponseDto,
+      inquiryId,
+    );
+  }
+
+  // TODO: 스터디 문의 답변 수정
+  // TODO: 스터디 문의 답변 삭제
+  // TODO: 스터디 문의 답변 불러오기
 
   // TODO: 단일 스터디 문의 전체 조회
   @Get(':studyId/inquiry')
