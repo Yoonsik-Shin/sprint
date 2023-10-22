@@ -34,6 +34,7 @@ export class User extends SuperEntity<User> {
   emailVerified: string;
 
   @OneToOne(() => Profile, {
+    eager: true,
     cascade: true,
     onDelete: 'SET NULL',
     orphanedRowAction: 'soft-delete',
