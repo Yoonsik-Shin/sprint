@@ -45,7 +45,7 @@ export class Study extends SuperEntity<Study> {
   @ManyToOne(() => User, (user) => user.ownedStudies)
   owner?: User;
 
-  @ManyToMany(() => TechStack)
+  @ManyToMany(() => TechStack, { eager: true })
   @JoinTable({ name: 'study_tech_stacks' })
   techStacks?: TechStack[];
 
