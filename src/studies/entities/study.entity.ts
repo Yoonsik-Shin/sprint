@@ -13,7 +13,7 @@ import { SuperEntity } from '../../commons/entities/super.entity';
 import { Recruit } from './recruit.entity';
 import { User } from '../../users/entities/user.entity';
 import { TechStack } from '../../tech-stacks/entities/tech-stack.entity';
-import { Inquiry } from './Inquiry.entity';
+import { Inquiry } from './inquiry.entity';
 
 @Entity()
 export class Study extends SuperEntity<Study> {

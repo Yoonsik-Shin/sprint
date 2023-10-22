@@ -9,9 +9,10 @@ import { DevCareer } from '../categories/entities/dev-career.entity';
 import { Study } from '../studies/entities/study.entity';
 import { Recruit } from '../studies/entities/recruit.entity';
 import { TechStack } from '../tech-stacks/entities/tech-stack.entity';
-import { Inquiry } from '../studies/entities/Inquiry.entity';
+import { Inquiry } from '../studies/entities/inquiry.entity';
 import { EmailService } from '../email/email.service';
 import { FilesModule } from '../files/files.module';
+import { InquiryResponse } from '../studies/entities/inquiry-response.entity';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { FilesModule } from '../files/files.module';
       Recruit,
       TechStack,
       Inquiry,
+      InquiryResponse,
     ]),
     FilesModule,
   ],

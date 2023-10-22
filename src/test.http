@@ -217,16 +217,25 @@ GET {{server}}/studies/4/close
 
 ### 스터디 문의 ---------------------------------------------
 ### 스터디 문의 생성
-POST {{server}}/studies/4/inquiry
+POST {{server}}/studies/1/inquiry
 Content-Type: application/json
 
 {
-  "title": "이 스터디 뭐하는 스터디인가요?",
-  "contents": "공지만 봐서는 도대체 뭘하는 스터디인지 잘 모르겠어서 문의드려요. 스터디 뭐하는 스터디인가요??"
+  "title": "123이 스터디 뭐하는 스터디인가요?",
+  "contents": "123공지만 봐서는 도대체 뭘하는 스터디인지 잘 모르겠어서 문의드려요. 스터디 뭐하는 스터디인가요??"
+}
+
+### 스터디 문의 답변달기
+POST {{server}}/studies/1/inquiry/7
+Content-Type: application/json
+
+{
+  "title": "123JS만 주구장창 파는 스터디입니다.",
+  "contents": "123관심있으시면 신청해주세요."
 }
 
 ### 단일 스터디 문의 전체조회
-GET {{server}}/studies/4/inquiry
+GET {{server}}/studies/1/inquiry
 
 ### 스터디 문의 수정
 PATCH {{server}}/studies/4/inquiry/2
