@@ -12,6 +12,7 @@ import { FilesModule } from './files/files.module';
 import { MongoModule } from './mongo/mongo.module';
 import { SocketModule } from './socket/socket.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
   imports: [
@@ -44,6 +45,8 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
     EmailModule,
     FilesModule,
     SocketModule,
+    ChatModule,
   ],
+  providers: [],
 })
 export class AppModule {}

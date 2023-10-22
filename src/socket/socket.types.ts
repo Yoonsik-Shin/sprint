@@ -12,6 +12,7 @@ export type NotificationStudyPayload = {
   toUserId: string;
   fromUserId: string;
   studyName: string;
+  studyId: number;
   time: Date;
   status: boolean;
 };
