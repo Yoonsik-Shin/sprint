@@ -16,6 +16,7 @@ import { UpdateStudyDto } from './dto/update-study.dto';
 import { CreateInquiryDto } from './dto/create-inquiry.dto';
 import { UpdateInquiryDto } from './dto/update-inquiry.dto';
 import { CreateInquiryResponseDto } from './dto/create-inquiry-response.dto';
+import { CreateAnnouncementDto } from './dto/create-announcement.dto';
 
 @Controller('studies')
 export class StudiesController {
@@ -103,6 +104,58 @@ export class StudiesController {
   @Get(':id/close')
   closeStudyRecruit(@Param('id') id: number, @UserData() user: User) {
     return this.studiesService.closeStudyRecruit(id, user);
+  }
+
+  /** 스터디 공지 */
+  // TODO: 스터디 공지 생성
+  @Post(':studyId/announcement')
+  createAnnouncement(
+    @Param('studyId') studyId: number,
+    @UserData() user: User,
+    @Body() createAnnouncementDto: CreateAnnouncementDto,
+  ) {
+    return this.studiesService.createAnnouncement(
+      studyId,
+      user,
+      createAnnouncementDto,
+    );
+  }
+
+  // TODO: 단일스터디 공지 모두 불러오기
+  @Get(':studyId/announcement')
+  fetchStudyAnnouncementAll(@Param('studyId') studyId: number) {
+    return this.studiesService.fetchStudyAnnouncementAll(studyId);
+  }
+
+  // TODO: 단일스터디 공지 하나만 불러오기
+  @Get(':studyId/announcement/:announcementId')
+  fetchOneAnnouncement(
+    @Param('studyId') studyId: number,
+    @Param('announcementId') announcementId: number,
+  ) {
+    return this.studiesService.fetchOneAnnouncement(studyId, announcementId);
+  }
+
+  // TODO: 스터디 공지 수정
+  @Patch(':studyId/announcement/:announcementId')
+  updateAnnouncement(
+    @Param('studyId') studyId: number,
+    @Param('announcementId') announcementId: number,
+    @UserData() user: User,
+    @Body() createAnnouncementDto: CreateAnnouncementDto,
+  ) {
+    return this.studiesService.updateAnnouncement(
+      studyId,
+      announcementId,
+      user,
+      createAnnouncementDto,
+    );
+  }
+
+  // TODO: 스터디 공지 삭제
+  @Delete(':studyId/announcement/:announcementId')
+  deleteAnnouncement() {
+    return this.studiesService.deleteAnnouncement();
   }
 
   /**

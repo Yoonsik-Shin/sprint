@@ -7,8 +7,5 @@ export class InquiryResponse extends SuperEntity<InquiryResponse> {
   id: number;
 
   @Column()
-  title: string;
-
-  @Column()
   contents: string;
 }

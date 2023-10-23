@@ -13,6 +13,7 @@ import { Inquiry } from '../studies/entities/inquiry.entity';
 import { EmailService } from '../email/email.service';
 import { FilesModule } from '../files/files.module';
 import { InquiryResponse } from '../studies/entities/inquiry-response.entity';
+import { Announcement } from '../studies/entities/announcement.enitity';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { InquiryResponse } from '../studies/entities/inquiry-response.entity';
       TechStack,
       Inquiry,
       InquiryResponse,
+      Announcement,
     ]),
     FilesModule,
   ],

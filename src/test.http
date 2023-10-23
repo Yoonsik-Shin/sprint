@@ -214,6 +214,21 @@ GET {{server}}/studies/3/bookmark
 ### 스터디 모집종료
 GET {{server}}/studies/4/close
 
+### 스터디 공지 ---------------------------------------------
+### 스터디 공지 생성
+POST {{server}}/studies/2/announcement
+Content-Type: application/json
+
+{
+  "title": "필독공지입니다.",
+  "contents": "알아서 잘하자.."
+}
+
+### 단일스터디 공지 모두 불러오기
+GET {{server}}/studies/2/announcement
+
+### 단일스터디 공지 하나만 불러오기
+
 
 ### 스터디 문의 ---------------------------------------------
 ### 스터디 문의 생성
@@ -230,7 +245,6 @@ POST {{server}}/studies/1/inquiry/7
 Content-Type: application/json
 
 {
-  "title": "123JS만 주구장창 파는 스터디입니다.",
   "contents": "123관심있으시면 신청해주세요."
 }
 

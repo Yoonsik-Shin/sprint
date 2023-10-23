@@ -14,6 +14,7 @@ import { Recruit } from './recruit.entity';
 import { User } from '../../users/entities/user.entity';
 import { TechStack } from '../../tech-stacks/entities/tech-stack.entity';
 import { Inquiry } from './inquiry.entity';
+import { Announcement } from './announcement.enitity';
 
 @Entity()
 export class Study extends SuperEntity<Study> {
@@ -41,6 +42,9 @@ export class Study extends SuperEntity<Study> {
 
   @OneToMany(() => Inquiry, (inquiry) => inquiry.study)
   inquiries?: Inquiry[];
+
+  @OneToMany(() => Announcement, (announcement) => announcement.study)
+  announcements?: Announcement[];
 
   @ManyToOne(() => User, (user) => user.ownedStudies)
   owner?: User;
