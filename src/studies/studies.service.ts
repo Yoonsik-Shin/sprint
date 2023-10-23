@@ -24,6 +24,8 @@ import { Model } from 'mongoose';
 import { StudyRequestStatus } from '../mongo/schemas/study-request-status';
 import { CreateInquiryResponseDto } from './dto/create-inquiry-response.dto';
 import { InquiryResponse } from './entities/inquiry-response.entity';
+import { CreateAnnouncementDto } from './dto/create-announcement.dto';
+import { Announcement } from './entities/announcement.enitity';
 
 @Injectable()
 export class StudiesService {
@@ -201,6 +203,64 @@ export class StudiesService {
     };
   }
 
+  async createAnnouncement(
+    studyId: number,
+    user: User,
+    createAnnouncementDto: CreateAnnouncementDto,
+  ) {
+    const study = await this.fetchStudy(studyId);
+    if (study.owner.id !== user.id)
+      throw new UnauthorizedException('공지를 생성할 수 있는 권한이 없습니다.');
+    const announcement = new Announcement({
+      ...createAnnouncementDto,
+      user,
+      study,
+    });
+    return this.entityManager.save(announcement);
+  }
+
+  async fetchStudyAnnouncementAll(studyId: number) {
+    const study = await this.entityManager.findOne(Study, {
+      where: { id: studyId },
+      relations: { announcements: true },
+    });
+    const [latestAnnouncement, ...rest] = study.announcements.reverse();
+    return latestAnnouncement;
+  }
+
+  async fetchOneAnnouncement(studyId: number, announcementId: number) {
+    const study = await this.entityManager.findOne(Study, {
+      where: { id: studyId },
+      relations: { announcements: true },
+    });
+    const announcement = study.announcements.find(
+      (announcement) => announcement.id === announcementId,
+    );
+    if (!announcement)
+      throw new BadRequestException('해당하는 공지사항이 존재하지 않습니다.');
+    return announcement;
+  }
+
+  async updateAnnouncement(
+    studyId: number,
+    announcementId: number,
+    user: User,
+    createAnnouncementDto: CreateAnnouncementDto,
+  ) {
+    const { contents } = createAnnouncementDto;
+    const study = await this.fetchStudy(studyId);
+    if (study.owner.id !== user.id)
+      throw new UnauthorizedException('공지를 수정할 수 있는 권한이 없습니다.');
+    const prevAnnouncement = await this.fetchOneAnnouncement(
+      studyId,
+      announcementId,
+    );
+    prevAnnouncement.contents = contents;
+    return this.entityManager.save(prevAnnouncement);
+  }
+
+  deleteAnnouncement() {}
+
   async bookmarkStudy(studyId: number, user: User) {
     const study = await this.findStudyWithRelations(
       studyId,
@@ -240,6 +300,10 @@ export class StudiesService {
       studyId: study.id,
       userId: user.id,
     });
+    if (isRequested)
+      throw new InternalServerErrorException(
+        '서버 오류로 정상적으로 처리되지 못했습니다.',
+      );
 
     user.participatingStudies.push(study);
     return this.entityManager.save(user);
