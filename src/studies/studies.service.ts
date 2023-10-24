@@ -259,12 +259,18 @@ export class StudiesService {
   }
 
   async checkStudyAttendRequest(id: number, user: User) {
-    const isRequested = await this.StudyRequestStatusModel.find().where({
+    const isRequested = await this.StudyRequestStatusModel.findOne({
       studyId: id,
       userId: user.id,
-    });
-    if (isRequested.length >= 1)
+    }).exec();
+    if (isRequested)
       throw new BadRequestException('이미 신청 요청이 되어있는 스터디입니다.');
+    const study = await this.entityManager.findOne(Study, {
+      where: { id },
+      relations: { owner: true },
+    });
+    if (study.owner.id === user.id)
+      throw new BadRequestException('스터디장은 스터디를 신청할 수 없습니다.');
     return true;
   }
 
@@ -340,8 +346,18 @@ export class StudiesService {
 
   async responseStudyInquiry(
     createInquiryResponseDto: CreateInquiryResponseDto,
+    studyId: number,
     inquiryId: number,
+    user: User,
   ) {
+    const study = await this.entityManager.findOne(Study, {
+      where: { id: studyId },
+      relations: { owner: true },
+    });
+    if (study.owner.id !== user.id)
+      throw new BadRequestException(
+        '스터디 문의에 대한 답변은 스터디장만 가능합니다.',
+      );
     const inquiry = await this.entityManager.findOne(Inquiry, {
       where: { id: inquiryId },
     });

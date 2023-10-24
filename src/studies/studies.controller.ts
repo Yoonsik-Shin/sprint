@@ -179,11 +179,15 @@ export class StudiesController {
   @Post(':studyId/inquiry/:inquiryId')
   responseStudyInquiry(
     @Body() createInquiryResponseDto: CreateInquiryResponseDto,
+    @Param('studyId') studyId: number,
     @Param('inquiryId') inquiryId: number,
+    @UserData() user: User,
   ) {
     return this.studiesService.responseStudyInquiry(
       createInquiryResponseDto,
+      studyId,
       inquiryId,
+      user,
     );
   }
 

@@ -157,11 +157,11 @@ POST {{server}}/studies
 Content-Type: application/json
 
 {
-  "name": "all123sda테테스스스트",
-  "content": "bdfv23rf트트트트관만관부",
+  "name": "비비비비비비비비",
+  "content": "b거거거거거ㅓ거부",
   "attendantsLimit": 3,
   "recruit": {
-    "title": "ㅇasdgxcv림ㄴ일키키",
+    "title": "치치ㅣ치일키키",
     "recruitPlaceholder": "모집조건에 대해 적는 곳입니다."
   },
   "techStacks": [
@@ -211,7 +211,7 @@ DELETE {{server}}/studies/4
 GET {{server}}/studies/4/restore
 
 ### 스터디 신청요청 여부 (studyId)
-GET {{server}}/studies/attend/check/1
+GET {{server}}/studies/attend/check/6
 
 ### 스터디 북마크 
 GET {{server}}/studies/1/bookmark
