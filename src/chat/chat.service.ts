@@ -30,34 +30,36 @@ export class ChatService {
   async newChatSend(client: Socket, payload: ChatMessageType, server: Server) {
     const { studyId, chatRoomId, userId, contents } = payload;
     // 마지막에 보낸 사람인지 검증
-    const [lastMessage] = await this.chatMessageModel
-      .find()
-      .where({ chatRoomId })
-      .sort({ createdAt: -1 })
-      .limit(1)
-      .exec();
-    console.log('✔️  lastMessage:', lastMessage);
+    // const [lastMessage] = await this.chatMessageModel
+    //   .find()
+    //   .where({ chatRoomId })
+    //   .sort({ createdAt: -1 })
+    //   .limit(1)
+    //   .exec();
+    // console.log('✔️  lastMessage:', lastMessage);
 
-    let chatMessage;
+    // let chatMessage;
 
-    const [receivedContent] = contents;
-    const condition = lastMessage && lastMessage.userId === userId;
-    if (condition) {
-      lastMessage.contents.push(receivedContent);
-      chatMessage = await this.chatMessageModel.findOneAndUpdate(
-        { chatRoomId, userId },
-        { $set: { contents: lastMessage.contents } },
-        { new: true },
-      );
-    } else {
-      // 새 채팅 mongoDB에 저장
-      chatMessage = await this.chatMessageModel.create({
-        ...payload,
-        contents: condition ? lastMessage.contents : contents,
-        createdAt: new Date(),
-      });
-    }
-    // TODO: 어플에 접속중인 스터디원에게 알림
+    // const [receivedContent] = contents;
+    // const condition = lastMessage && lastMessage.userId === userId;
+    // console.log('✔️  condition:', condition);
+    // console.log('✔️  userId:', userId);
+    // if (condition) {
+    //   lastMessage.contents.push(receivedContent);
+    //   chatMessage = await this.chatMessageModel.findOneAndUpdate(
+    //     { chatRoomId, userId },
+    //     { $set: { contents: lastMessage.contents } },
+    //     { new: true },
+    //   );
+    //   console.log('✔️  chatMessage:', chatMessage);
+    // } else {
+    // 새 채팅 mongoDB에 저장
+    const chatMessage = await this.chatMessageModel.create({
+      ...payload,
+      contents,
+      createdAt: new Date(),
+    });
+    console.log('✔️  chatMessage:', chatMessage);
 
     // 채팅룸에 있는 스터디원에게 새 채팅내역 전송
     const studyMembers = await this.studyMemberModel
@@ -67,8 +69,44 @@ export class ChatService {
     const isConnectedMembers = await Promise.all(
       studyMembers.map((studyMember) => this.redis.get(studyMember.userId)),
     );
+    console.log('✔️  isConnectedMembers:', isConnectedMembers);
 
     server.to(isConnectedMembers).emit('new-chat-message', chatMessage);
+    // TODO: 어플에 접속중인 스터디원에게 알림
+  }
+
+  async sameChatUser(client: Socket, payload: any, server: Server) {
+    const { chatRoomId, messageId, contents, oldDataId } = payload;
+    console.log('✔️  contents:', contents);
+    console.log('✔️  messageId:', messageId);
+    const targetMessage = await this.chatMessageModel
+      .findOneAndUpdate(
+        { _id: messageId },
+        { $set: { contents } },
+        { new: true },
+      )
+      .exec();
+    console.log('✔️  targetMessage:', targetMessage);
+
+    const deletedMessage = await this.chatMessageModel.findOneAndRemove({
+      _id: oldDataId,
+    });
+    console.log('✔️  deletedMessage:', deletedMessage);
+
+    // let chatMessage;
+
+    // const [receivedContent] = contents;
+    // const condition = lastMessage && lastMessage.userId === userId;
+    // console.log('✔️  condition:', condition);
+    // console.log('✔️  userId:', userId);
+    // if (condition) {
+    //   lastMessage.contents.push(receivedContent);
+    //   chatMessage = await this.chatMessageModel.findOneAndUpdate(
+    //     { chatRoomId, userId },
+    //     { $set: { contents: lastMessage.contents } },
+    //     { new: true },
+    //   );
+    //   console.log('✔️  chatMessage:', chatMessage);
   }
 }
 

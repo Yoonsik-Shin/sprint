@@ -22,4 +22,9 @@ export class ChatGateway {
   newChatSend(client: Socket, payload: any) {
     return this.chatService.newChatSend(client, payload, this.server);
   }
+
+  @SubscribeMessage('sameChatUser')
+  sameChatUser(client: Socket, payload: any) {
+    return this.chatService.sameChatUser(client, payload, this.server);
+  }
 }

@@ -10,7 +10,7 @@ VALUES
 	('node', '/techStack/node.svg'),
 	('c', '/techStack/c.svg'),
 	('c++', '/techStack/c++.svg'),
-	('c#', '/techStack/c#.svg'),
+	('c#', '/techStack/csharp.svg'),
 	('java', '/techStack/java.svg'),
 	('kotlin', '/techStack/kotlin.svg'),
 	('python', '/techStack/python.svg'),

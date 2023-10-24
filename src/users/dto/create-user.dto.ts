@@ -9,6 +9,7 @@ import {
 } from 'class-validator';
 import { CreateProfileDto } from './create-profile.dto';
 import { CreateCategoryDto } from '../../categories/dto/create-category.dto';
+import { CreateTechStackDto } from '../../tech-stacks/dto/create-tech-stack.dto';
 
 export class CreateUserDto {
   @IsString()
@@ -45,4 +46,9 @@ export class CreateUserDto {
   @Type(() => CreateCategoryDto)
   @IsOptional()
   devCareer?: CreateCategoryDto;
+
+  @ValidateNested()
+  @Type(() => CreateTechStackDto)
+  @IsOptional()
+  techStacks?: CreateTechStackDto[];
 }

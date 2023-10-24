@@ -5,5 +5,6 @@ import { TechStacksController } from './tech-stacks.controller';
 @Module({
   controllers: [TechStacksController],
   providers: [TechStacksService],
+  exports: [TechStacksService],
 })
 export class TechStacksModule {}

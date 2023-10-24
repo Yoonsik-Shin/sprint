@@ -9,10 +9,35 @@ import {
 import { EntityManager, Not, IsNull } from 'typeorm';
 import { TechStack } from './entities/tech-stack.entity';
 import { CreateTechStackDto } from './dto/create-tech-stack.dto';
+import { CreateStudyDto } from '../studies/dto/create-study.dto';
+import { UpdateStudyDto } from '../studies/dto/update-study.dto';
+import { CreateUserDto } from '../users/dto/create-user.dto';
+import { UpdateUserDto } from '../users/dto/update-user.dto';
 
 @Injectable()
 export class TechStacksService {
   constructor(private readonly entityManager: EntityManager) {}
+
+  getTechStack() {
+    return this.entityManager.find(TechStack);
+  }
+
+  async techStack(
+    dto: CreateStudyDto | UpdateStudyDto | CreateUserDto | UpdateUserDto,
+  ) {
+    const allTechStacks = await this.getTechStack();
+    if (!allTechStacks)
+      throw new InternalServerErrorException(
+        '서버 오류로 기술스택을 찾아오지 못했습니다. 다시 시도해주세요.',
+      );
+    const techStacks = dto.techStacks?.map(
+      (techStackDto: CreateTechStackDto | UpdateTechStackDto) =>
+        allTechStacks.find(
+          (techStack: TechStack) => techStack.id === techStackDto.id,
+        ),
+    );
+    return techStacks;
+  }
 
   private async isTechStackExist(createTechStack: CreateTechStackDto) {
     const isExist = await this.entityManager.findOneBy(TechStack, {

@@ -14,6 +14,7 @@ import { EmailService } from '../email/email.service';
 import { FilesModule } from '../files/files.module';
 import { InquiryResponse } from '../studies/entities/inquiry-response.entity';
 import { Announcement } from '../studies/entities/announcement.enitity';
+import { TechStacksModule } from '../tech-stacks/tech-stacks.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { Announcement } from '../studies/entities/announcement.enitity';
       Announcement,
     ]),
     FilesModule,
+    TechStacksModule,
   ],
   controllers: [UsersController],
   providers: [UsersService, EmailService],

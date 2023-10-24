@@ -50,7 +50,8 @@ export class AuthController {
   @Get()
   logout(@Session() session: Record<string, any>, @Res() res: Response) {
     session.destroy(() => {
-      res.redirect(`${this.config.get('BASE_URL')}/login`);
+      // FIXME: 환경변수값
+      res.redirect(`http:localhost:5137/login`);
     });
   }
 }

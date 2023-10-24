@@ -18,12 +18,14 @@ import { v4 as uuidv4 } from 'uuid';
 import { Job } from '../categories/entities/job.entity';
 import { DevCareer } from '../categories/entities/dev-career.entity';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { TechStacksService } from '../tech-stacks/tech-stacks.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     private readonly entityManager: EntityManager,
     private readonly filesService: FilesService,
+    private readonly techStacksService: TechStacksService,
     private eventEmitter: EventEmitter2,
   ) {}
 
@@ -67,6 +69,7 @@ export class UsersService {
     };
   }
 
+  // FIXME: 업데이트 수정
   async updateUser(
     image: Express.Multer.File,
     user: User,
@@ -79,9 +82,16 @@ export class UsersService {
       const { url } = await this.filesService.uploadFile(image);
       updateUserDto.profile.profileImg = url;
     }
+    const allTechStacks = await this.techStacksService.getTechStack();
+    if (!allTechStacks)
+      throw new InternalServerErrorException(
+        '서버 오류로 기술스택을 찾아오지 못했습니다. 다시 시도해주세요.',
+      );
+    const techStacks = await this.techStacksService.techStack(updateUserDto);
     user.profile = new Profile(updateUserDto.profile);
     user.job = new Job(updateUserDto.job);
     user.devCareer = new DevCareer(updateUserDto.devCareer);
+    user.techStacks = techStacks;
     const updatedUser = await this.entityManager.save(user);
     if (!updatedUser)
       throw new InternalServerErrorException(
