@@ -7,6 +7,7 @@ import {
   StudyRequestStatus,
   StudyRequestStatusSchema,
 } from '../mongo/schemas/study-request-status';
+import { TechStacksModule } from '../tech-stacks/tech-stacks.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import {
       { name: StudyMember.name, schema: StudyMemberSchema },
       { name: StudyRequestStatus.name, schema: StudyRequestStatusSchema },
     ]),
+    TechStacksModule,
   ],
   controllers: [StudiesController],
   providers: [StudiesService],

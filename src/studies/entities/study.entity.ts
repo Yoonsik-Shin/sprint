@@ -36,7 +36,7 @@ export class Study extends SuperEntity<Study> {
   @Column({ nullable: true })
   endDate: Date;
 
-  @OneToOne(() => Recruit, { cascade: true })
+  @OneToOne(() => Recruit, { eager: true, cascade: true })
   @JoinColumn()
   recruit: Recruit;
 

@@ -15,10 +15,15 @@ Content-Type: application/json
 
 {
   "profile": {
-    "nickname": "테스트1",
+    "nickname": "잼미니",
     "gender": false,
-    "profileImg": "/abc.png"
-  }
+    "profileImg": "/techStack/javascript.svg"
+  },
+  "techStacks": [
+    { "id": 1 },
+    { "id": 2 },
+    { "id": 3 },
+  ]
 }
 
 ### 유저 로그인
@@ -26,7 +31,7 @@ POST {{server}}/auth
 Content-Type: application/json
 
 {
-  "email": "abc1234@gmail.com",
+  "email": "ttt123@naver.com",
   "password": "crud1234"
 }
 
@@ -59,7 +64,7 @@ PATCH {{server}}/users/password/reset
 Content-Type: application/json
 
 {
-  "password": "tls009988*"
+  "password": "crud1234"
 }
 
 # ----------------------------------------------------
@@ -152,11 +157,11 @@ POST {{server}}/studies
 Content-Type: application/json
 
 {
-  "name": "테테스스스트",
-  "content": "트트트트관만관부",
-  "attendantsLimit": 5,
+  "name": "all123sda테테스스스트",
+  "content": "bdfv23rf트트트트관만관부",
+  "attendantsLimit": 3,
   "recruit": {
-    "title": "ㅇ림ㄴ일키키",
+    "title": "ㅇasdgxcv림ㄴ일키키",
     "recruitPlaceholder": "모집조건에 대해 적는 곳입니다."
   },
   "techStacks": [
@@ -209,7 +214,7 @@ GET {{server}}/studies/4/restore
 GET {{server}}/studies/attend/check/1
 
 ### 스터디 북마크 
-GET {{server}}/studies/3/bookmark
+GET {{server}}/studies/1/bookmark
 
 ### 스터디 모집종료
 GET {{server}}/studies/4/close

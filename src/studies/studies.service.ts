@@ -1,3 +1,4 @@
+import { TechStacksService } from './../tech-stacks/tech-stacks.service';
 import { Inquiry } from './entities/inquiry.entity';
 import {
   Injectable,
@@ -6,8 +7,7 @@ import {
   BadRequestException,
   HttpStatus,
 } from '@nestjs/common';
-import { EntityManager, FindOperator, In, IsNull, Not } from 'typeorm';
-import { TechStack } from '../tech-stacks/entities/tech-stack.entity';
+import { EntityManager, IsNull, Not } from 'typeorm';
 import { CreateStudyDto } from './dto/create-study.dto';
 import { User } from '../users/entities/user.entity';
 import { Study } from './entities/study.entity';
@@ -15,8 +15,6 @@ import { Recruit } from './entities/recruit.entity';
 import { UpdateStudyDto } from './dto/update-study.dto';
 import { arrayToTrueObject } from '../commons/utils/arrayToTrueObject';
 import { STUDY_RELATIONS } from './enum/study.enum';
-import { UpdateTechStackDto } from '../tech-stacks/dto/update-tech-stack.dto';
-import { CreateTechStackDto } from '../tech-stacks/dto/create-tech-stack.dto';
 import { CreateInquiryDto } from './dto/create-inquiry.dto';
 import { StudyMember } from '../mongo/schemas';
 import { InjectModel } from '@nestjs/mongoose';
@@ -35,35 +33,17 @@ export class StudiesService {
     @InjectModel(StudyRequestStatus.name)
     private readonly StudyRequestStatusModel: Model<StudyRequestStatus>,
     private readonly entityManager: EntityManager,
+    private readonly techStacksService: TechStacksService,
   ) {}
-
-  private getTechStack() {
-    return this.entityManager.find(TechStack);
-  }
-
-  private async techStack(dto: CreateStudyDto | UpdateStudyDto) {
-    const allTechStacks = await this.getTechStack();
-    if (!allTechStacks)
-      throw new InternalServerErrorException(
-        '서버 오류로 기술스택을 찾아오지 못했습니다. 다시 시도해주세요.',
-      );
-    const techStacks = dto.techStacks?.map(
-      (techStackDto: CreateTechStackDto | UpdateTechStackDto) =>
-        allTechStacks.find(
-          (techStack: TechStack) => techStack.id === techStackDto.id,
-        ),
-    );
-    return techStacks;
-  }
 
   async createStudy(user: User, createStudyDto: CreateStudyDto) {
     const recruit = new Recruit({ ...createStudyDto.recruit });
-    const allTechStacks = await this.getTechStack();
+    const allTechStacks = await this.techStacksService.getTechStack();
     if (!allTechStacks)
       throw new InternalServerErrorException(
         '서버 오류로 기술스택을 찾아오지 못했습니다. 다시 시도해주세요.',
       );
-    const techStacks = await this.techStack(createStudyDto);
+    const techStacks = await this.techStacksService.techStack(createStudyDto);
     // FIXME: 리팩토링 필요
     delete user.password;
     delete user.createdAt;
@@ -156,7 +136,7 @@ export class StudiesService {
       },
       targetStudy,
     );
-    const techStacks = await this.techStack(updateStudyDto);
+    const techStacks = await this.techStacksService.techStack(updateStudyDto);
     updatedStudy.techStacks = techStacks;
     return this.entityManager.save(new Study(updatedStudy));
   }
@@ -265,6 +245,7 @@ export class StudiesService {
     const study = await this.findStudyWithRelations(
       studyId,
       STUDY_RELATIONS.TechStacks,
+      STUDY_RELATIONS.Recruit,
     );
     const bookmarkedStudy = user.bookmarkedStudies.find(
       (bookmarkStudy) => bookmarkStudy.id === studyId,
@@ -282,7 +263,7 @@ export class StudiesService {
       studyId: id,
       userId: user.id,
     });
-    if (isRequested)
+    if (isRequested.length >= 1)
       throw new BadRequestException('이미 신청 요청이 되어있는 스터디입니다.');
     return true;
   }
