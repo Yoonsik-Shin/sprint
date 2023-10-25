@@ -79,6 +79,7 @@ export class ChatService {
     const { chatRoomId, messageId, contents, oldDataId } = payload;
     console.log('✔️  contents:', contents);
     console.log('✔️  messageId:', messageId);
+    console.log('✔️  oldDataId:', oldDataId);
     const targetMessage = await this.chatMessageModel
       .findOneAndUpdate(
         { _id: messageId },
@@ -88,9 +89,11 @@ export class ChatService {
       .exec();
     console.log('✔️  targetMessage:', targetMessage);
 
-    const deletedMessage = await this.chatMessageModel.findOneAndRemove({
-      _id: oldDataId,
-    });
+    const deletedMessage = await this.chatMessageModel
+      .findOneAndRemove({
+        _id: oldDataId,
+      })
+      .exec();
     console.log('✔️  deletedMessage:', deletedMessage);
 
     // let chatMessage;

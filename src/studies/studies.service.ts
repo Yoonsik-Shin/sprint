@@ -6,6 +6,7 @@ import {
   UnauthorizedException,
   BadRequestException,
   HttpStatus,
+  ConflictException,
 } from '@nestjs/common';
 import { EntityManager, IsNull, Not } from 'typeorm';
 import { CreateStudyDto } from './dto/create-study.dto';
@@ -263,14 +264,13 @@ export class StudiesService {
       studyId: id,
       userId: user.id,
     }).exec();
-    if (isRequested)
-      throw new BadRequestException('이미 신청 요청이 되어있는 스터디입니다.');
+    if (isRequested) throw new BadRequestException('신청중');
     const study = await this.entityManager.findOne(Study, {
       where: { id },
       relations: { owner: true },
     });
     if (study.owner.id === user.id)
-      throw new BadRequestException('스터디장은 스터디를 신청할 수 없습니다.');
+      throw new ConflictException('스터디장은 스터디를 신청할 수 없습니다.');
     return true;
   }
 
