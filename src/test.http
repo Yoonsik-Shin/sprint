@@ -8,6 +8,14 @@ Content-Type: application/json
   "email": "ttt123@naver.com",
   "password": "crud1234"
 }
+### 유저 생성
+POST https://dev.withme-sasac.site/api/users
+Content-Type: application/json
+
+{
+  "email": "ttt123@naver.com",
+  "password": "crud1234"
+}
 
 ### 유저 업데이트
 PATCH {{server}}/users/req-user
