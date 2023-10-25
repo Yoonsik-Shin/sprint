@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo
+    env_file:
+      - ./.env.dev
+    ports:
+      - 27017:27017
+    volumes:
+      - ./data:/data
+
+  redis:
+    image: redis
+    env_file:
+      - ./.env.dev
+    ports:
+      - 6380:6379
+    volumes:
+      - redis_data:/data
+
+volumes:
+  data:
+  redis_data:
