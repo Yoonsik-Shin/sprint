@@ -12,7 +12,7 @@ import { NotificationStudyPayload } from './socket.types';
 @WebSocketGateway({
   // transports: ['websocket'],
   cors: {
-    origin: ['http://localhost:5173', 'http://localhost:3000'],
+    origin: ['http://localhost:5173', process.env.BASE_URL],
     credentials: true,
   },
 })
