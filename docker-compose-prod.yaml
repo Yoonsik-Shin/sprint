@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo
+    env_file:
+      - ./.env
+    ports:
+      - 27017:27017
+    volumes:
+      - ./data:/data
+
+volumes:
+  data:
