@@ -6,7 +6,7 @@ export type ChatMessageDocument = HydratedDocument<ChatMessage>;
 @Schema()
 export class ChatMessage {
   @Prop()
-  chatRoomId: string;
+  chatRoomId: number;
 
   @Prop()
   userId: string;
