@@ -27,7 +27,7 @@ export class Notification {
   studyName: string;
 
   @Prop()
-  studyId: string
+  studyId: number;
 
   @Prop()
   time: Date;

@@ -1,6 +1,6 @@
 import { UsersService } from './../users/users.service';
 import { USER_RELATIONS } from './../users/enum/users.enum';
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
@@ -60,16 +60,24 @@ export class SocketService {
     const { action, toUserId, fromUserId, studyId } = payload;
 
     // 이미 신청한 스터디인지 확인하는 로직
-    const isExist = await this.notificationModel
-      .findOne()
-      .where({ toUserId, studyId, action })
-      .exec();
-    if (isExist) throw new BadRequestException('이미 신청중인 스터디입니다.');
+    const isExist = await this.StudyRequestStatusModel.findOne({
+      studyId,
+      userId: fromUserId,
+    });
+    console.log('✔️  isExist:', isExist);
+    if (isExist) {
+      client.emit('attend-duplicate', {
+        statusCode: HttpStatus.BAD_REQUEST,
+        message: '이미 신청중인 혹은 거절당했던 스터디 입니다.',
+      });
+      return;
+    }
 
     //mongoDB에 스터디 신청 요청 여부 저장
     await this.StudyRequestStatusModel.create({
       studyId,
       userId: fromUserId,
+      status: false,
     });
 
     // MongoDB에 알림 내용(NotificationSchema) 저장
@@ -87,6 +95,7 @@ export class SocketService {
 
     // 만약 redis에서 toUserId로 조회하여 sid값이 있다면, 소켓으로 알림내용 보내줌
     const toUserSid = await this.redis.get(toUserId);
+    console.log('✔️  toUserSid:', toUserSid);
     if (toUserSid)
       server.to(toUserSid).emit('new-notification', newNotification);
   }
@@ -126,7 +135,7 @@ export class SocketService {
     payload: NotificationStudyPayload,
     server: Server,
   ) {
-    const { fromUserId, toUserId } = payload;
+    const { fromUserId, toUserId, studyId } = payload;
     const fromUser = await this.usersService.findUserWithRelations(
       fromUserId,
       USER_RELATIONS.Profile,
@@ -136,6 +145,15 @@ export class SocketService {
       ...payload,
       fromUser,
     });
+
+    // 신청서 처리상태 변경
+    this.StudyRequestStatusModel.findOneAndUpdate(
+      {
+        studyId,
+        userId: fromUserId,
+      },
+      { status: true },
+    );
 
     // 만약 redis에서 toUserId로 조회하여 sid값이 있다면, 소켓으로 알림내용 보내줌
     const toUserSid = await this.redis.get(toUserId);

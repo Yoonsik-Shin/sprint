@@ -7,6 +7,7 @@ import {
   BadRequestException,
   HttpStatus,
   ConflictException,
+  UnprocessableEntityException,
 } from '@nestjs/common';
 import { EntityManager, IsNull, Not } from 'typeorm';
 import { CreateStudyDto } from './dto/create-study.dto';
@@ -264,7 +265,10 @@ export class StudiesService {
       studyId: id,
       userId: user.id,
     }).exec();
-    if (isRequested) throw new BadRequestException('신청중');
+    if (isRequested && isRequested.status === false)
+      throw new BadRequestException('신청중');
+    if (isRequested && isRequested.status === true)
+      return new UnprocessableEntityException('완료됨');
     const study = await this.entityManager.findOne(Study, {
       where: { id },
       relations: { owner: true },
@@ -283,14 +287,18 @@ export class StudiesService {
       where: { id: fromUser.id },
       relations: { participatingStudies: true },
     });
-    const isRequested = await this.StudyRequestStatusModel.deleteOne({
-      studyId: study.id,
-      userId: user.id,
-    });
-    if (isRequested)
-      throw new InternalServerErrorException(
-        '서버 오류로 정상적으로 처리되지 못했습니다.',
-      );
+
+    await this.StudyRequestStatusModel.findOneAndUpdate(
+      {
+        studyId: study.id,
+        userId: user.id,
+      },
+      { $set: { status: true } },
+    );
+    // if (isRequested)
+    //   throw new InternalServerErrorException(
+    //     '서버 오류로 정상적으로 처리되지 못했습니다.',
+    //   );
 
     user.participatingStudies.push(study);
     return this.entityManager.save(user);

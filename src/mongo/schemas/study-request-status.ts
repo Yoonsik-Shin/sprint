@@ -6,10 +6,13 @@ export type StudyRequestStatusDocument = HydratedDocument<StudyRequestStatus>;
 @Schema()
 export class StudyRequestStatus {
   @Prop()
-  studyId: string;
+  studyId: number;
 
   @Prop()
   userId: string;
+
+  @Prop()
+  status: boolean;
 }
 
 export const StudyRequestStatusSchema =
