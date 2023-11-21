@@ -11,9 +11,8 @@ import { ConfigService } from '@nestjs/config';
 import { Redis } from 'ioredis';
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import { EntityManager } from 'typeorm';
-import { User } from '../users/entities/user.entity';
 import { EmailTokenDto } from './email.dto.ts/email-token.dto';
-import { UsersService } from '../users/users.service';
+import { User, UsersService } from '../users';
 
 interface EmailOptions {
   to: string;

@@ -1,20 +1,18 @@
-import { Module, forwardRef } from '@nestjs/common';
-import { UsersService } from './users.service';
-import { UsersController } from './users.controller';
+import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './entities/user.entity';
-import { Profile } from './entities/profile.entity';
-import { Job } from '../categories/entities/job.entity';
-import { DevCareer } from '../categories/entities/dev-career.entity';
-import { Study } from '../studies/entities/study.entity';
-import { Recruit } from '../studies/entities/recruit.entity';
-import { TechStack } from '../tech-stacks/entities/tech-stack.entity';
-import { Inquiry } from '../studies/entities/inquiry.entity';
-import { EmailService } from '../email/email.service';
-import { FilesModule } from '../files/files.module';
-import { InquiryResponse } from '../studies/entities/inquiry-response.entity';
-import { Announcement } from '../studies/entities/announcement.enitity';
-import { TechStacksModule } from '../tech-stacks/tech-stacks.module';
+import { UsersController } from './users.controller';
+import { UsersService } from './users.service';
+import { Profile, User } from './entities';
+import { DevCareer, Job } from '../categories';
+import { TechStack, TechStacksModule } from '../tech-stacks';
+import {
+  Announcement,
+  Inquiry,
+  InquiryResponse,
+  Recruit,
+  Study,
+} from '../studies';
+import { FilesModule } from '../files';
 
 @Module({
   imports: [
@@ -34,7 +32,7 @@ import { TechStacksModule } from '../tech-stacks/tech-stacks.module';
     TechStacksModule,
   ],
   controllers: [UsersController],
-  providers: [UsersService, EmailService],
+  providers: [UsersService],
   exports: [UsersService],
 })
 export class UsersModule {}

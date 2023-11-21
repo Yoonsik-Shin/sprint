@@ -17,6 +17,7 @@ import { DevCareer } from '../../categories/entities/dev-career.entity';
 import { Study } from '../../studies/entities/study.entity';
 import { TechStack } from '../../tech-stacks/entities/tech-stack.entity';
 import { Inquiry } from '../../studies/entities/inquiry.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class User extends SuperEntity<User> {
@@ -27,9 +28,11 @@ export class User extends SuperEntity<User> {
   @Column({ length: 128 })
   email: string;
 
+  @Exclude()
   @Column({ length: 128 })
   password: string;
 
+  @Exclude()
   @Column({ default: 'NOT_YET' })
   emailVerified: string;
 

@@ -1,12 +1,20 @@
+import { EntityManager } from 'typeorm';
+import { ConfigService } from '@nestjs/config';
 import { BadRequestException, HttpStatus, Injectable } from '@nestjs/common';
 import { User } from '../users/entities/user.entity';
 import * as bcrypt from 'bcrypt';
+import { v4 as uuidv4 } from 'uuid';
 import { UsersService } from '../users/users.service';
 import { Response } from 'express';
+import { Profile } from '../users';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly entityManager: EntityManager,
+    private readonly usersService: UsersService,
+    private readonly configService: ConfigService,
+  ) {}
 
   async validateUser(email: string, password: string) {
     const user = await this.usersService.findUser(email);
@@ -21,7 +29,28 @@ export class AuthService {
     return user;
   }
 
+  async checkOAuthUser(email: string) {
+    const isDeletedUser =
+      await this.usersService.validateDeletedUserWithEmail(email);
+    if (isDeletedUser)
+      throw new BadRequestException(
+        '탈퇴한 이력이 있는 이메일입니다. 다른 이메일을 사용해주세요.',
+      );
+
+    const user = await this.usersService.findUser(email);
+    if (user) return user;
+
+    const newUser = new User({
+      email,
+      password: uuidv4(),
+      profile: new Profile({}),
+      job: null,
+      devCareer: null,
+    });
+    return this.entityManager.save(newUser);
+  }
+
   loginOAuth(user: User, res: Response) {
-    res.redirect('https://yoonsik.shop');
+    res.redirect(`${this.configService.get('CLIENT_URL')}/main`);
   }
 }

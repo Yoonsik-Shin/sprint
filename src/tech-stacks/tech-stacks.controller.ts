@@ -7,10 +7,11 @@ import {
   Patch,
   Delete,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { TechStacksService } from './tech-stacks.service';
-import { UpdateTechStackDto } from './dto/update-tech-stack.dto';
-import { CreateTechStackDto } from './dto/create-tech-stack.dto';
+import { CreateTechStackDto, UpdateTechStackDto } from './dto';
 
+@ApiTags('Tech Stacks')
 @Controller('tech-stacks')
 export class TechStacksController {
   constructor(private readonly techStacksService: TechStacksService) {}

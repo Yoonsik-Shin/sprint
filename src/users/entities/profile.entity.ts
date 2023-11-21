@@ -1,8 +1,6 @@
-import { PickType } from '@nestjs/mapped-types';
 import {
   Column,
   Entity,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';

@@ -2,12 +2,17 @@ import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { SessionSerializer } from './serializers/session.serializer';
-import { LocalStrategy } from './strategies/local.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthenticatedGuard } from './guards/authenticated.guard';
 import { UsersModule } from '../users/users.module';
-import { KakaoStrategy } from './strategies/social-kakao.strategy';
+import {
+  LocalStrategy,
+  GoogleStrategy,
+  KakaoStrategy,
+  NaverStrategy,
+  GithubStrategy,
+} from './strategies';
 
 @Module({
   imports: [
@@ -18,7 +23,10 @@ import { KakaoStrategy } from './strategies/social-kakao.strategy';
   providers: [
     AuthService,
     LocalStrategy,
+    GoogleStrategy,
     KakaoStrategy,
+    NaverStrategy,
+    GithubStrategy,
     SessionSerializer,
     {
       provide: APP_GUARD,

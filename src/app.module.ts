@@ -1,26 +1,27 @@
-import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { DbModule } from './db/db.module';
-import { UsersModule } from './users/users.module';
-import { AuthModule } from './auth/auth.module';
-import { StudiesModule } from './studies/studies.module';
-import { CategoriesModule } from './categories/categories.module';
-import { TechStacksModule } from './tech-stacks/tech-stacks.module';
-import { EmailModule } from './email/email.module';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
-import { FilesModule } from './files/files.module';
-import { MongoModule } from './mongo/mongo.module';
-import { SocketModule } from './socket/socket.module';
+import { ClassSerializerInterceptor, Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { DbModule } from './db/db.module';
+import { UsersModule } from './users';
+import { StudiesModule } from './studies';
+import { CategoriesModule } from './categories';
+import { TechStacksModule } from './tech-stacks';
+import { FilesModule } from './files';
+import { MongoModule } from './mongo/mongo.module';
+import { AuthModule } from './auth/auth.module';
+import { SocketModule } from './socket/socket.module';
 import { ChatModule } from './chat/chat.module';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { EmailModule } from './email';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: [
-        '.env.local',
-        // '.env.dev',
+        // '.env.local',
+        '.env.dev',
         // '.env'
       ],
       expandVariables: true,
@@ -47,6 +48,11 @@ import { ChatModule } from './chat/chat.module';
     SocketModule,
     ChatModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ClassSerializerInterceptor,
+    },
+  ],
 })
 export class AppModule {}

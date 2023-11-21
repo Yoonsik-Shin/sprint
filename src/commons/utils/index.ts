@@ -1,0 +1,1 @@
+export { arrayToTrueObject } from './arrayToTrueObject';
