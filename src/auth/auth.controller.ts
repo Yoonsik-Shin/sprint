@@ -17,12 +17,14 @@ import { SocialAuthGuard } from './guards/social-auth.guard';
 import { User } from '../users/entities/user.entity';
 import { Response } from 'express';
 import { NOT_YET } from '../commons/constants/constants';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
-    private readonly config: ConfigService,
+    private readonly configService: ConfigService,
   ) {}
 
   // TODO: 로그인
@@ -38,7 +40,6 @@ export class AuthController {
   }
 
   // TODO: 소셜로그인
-  // FIXME: 아직 안됨
   @Public()
   @UseGuards(SocialAuthGuard)
   @Get(':social')
@@ -50,8 +51,7 @@ export class AuthController {
   @Get()
   logout(@Session() session: Record<string, any>, @Res() res: Response) {
     session.destroy(() => {
-      // FIXME: 환경변수값
-      res.redirect(`http:localhost:5137/login`);
+      res.redirect(`${this.configService.get('CLIENT_URL')}/login`);
     });
   }
 }

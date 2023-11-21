@@ -1,4 +1,4 @@
-@server = http://localhost:3000
+@server = http://localhost:3000/api
 
 ### 유저 생성
 POST {{server}}/users
@@ -190,7 +190,7 @@ GET {{server}}/studies/offset?limit=5&offset=0
 GET {{server}}/studies/offset?limit=20&offset=0&filter=1,2
 
 ### 스터디 단일 조회
-GET {{server}}/studies/4
+GET {{server}}/studies/1
 
 ### 스터디 수정
 PATCH {{server}}/studies/3

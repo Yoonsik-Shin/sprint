@@ -1,4 +1,3 @@
-import { FilesService } from './../files/files.service';
 import {
   ConflictException,
   HttpStatus,
@@ -6,19 +5,17 @@ import {
   InternalServerErrorException,
   BadRequestException,
 } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { Profile } from './entities/profile.entity';
-import { User } from './entities/user.entity';
-import { EntityManager } from 'typeorm';
-import * as bcrypt from 'bcrypt';
-import { arrayToTrueObject } from '../commons/utils/arrayToTrueObject';
-import { USER_RELATIONS } from './enum/users.enum';
-import { v4 as uuidv4 } from 'uuid';
-import { Job } from '../categories/entities/job.entity';
-import { DevCareer } from '../categories/entities/dev-career.entity';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { TechStacksService } from '../tech-stacks/tech-stacks.service';
+import { EntityManager, IsNull, Not } from 'typeorm';
+import * as bcrypt from 'bcrypt';
+import { v4 as uuidv4 } from 'uuid';
+import { arrayToTrueObject } from '../commons';
+import { TechStacksService } from '../tech-stacks';
+import { FilesService } from '../files';
+import { Profile, User } from './entities';
+import { CreateUserDto, UpdateUserDto } from './dto';
+import { USER_RELATIONS } from './enum/users.enum';
+import { DevCareer, Job } from '../categories';
 
 @Injectable()
 export class UsersService {
@@ -163,7 +160,7 @@ export class UsersService {
    * 로그인한 최신 유저정보
    * 관리자용
    */
-  findUser(idOrEmail: string) {
+  findUserWithAllRelation(idOrEmail: string) {
     return this.findUserWithRelations(
       idOrEmail,
       ...Object.values(USER_RELATIONS),
@@ -173,6 +170,19 @@ export class UsersService {
   findAllUsers() {
     return this.entityManager.find(User, {
       relations: arrayToTrueObject(Object.values(USER_RELATIONS)),
+    });
+  }
+
+  findUser(idOrEmail: string) {
+    return this.entityManager.findOne(User, {
+      where: [{ id: idOrEmail }, { email: idOrEmail }],
+    });
+  }
+
+  validateDeletedUserWithEmail(email: string) {
+    return this.entityManager.findOne(User, {
+      where: { email, deletedAt: Not(IsNull()) },
+      withDeleted: true,
     });
   }
 }

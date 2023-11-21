@@ -25,7 +25,7 @@ import { StudyRequestStatus } from '../mongo/schemas/study-request-status';
 import { CreateInquiryResponseDto } from './dto/create-inquiry-response.dto';
 import { InquiryResponse } from './entities/inquiry-response.entity';
 import { CreateAnnouncementDto } from './dto/create-announcement.dto';
-import { Announcement } from './entities/announcement.enitity';
+import { Announcement } from './entities/announcement.entity';
 
 @Injectable()
 export class StudiesService {

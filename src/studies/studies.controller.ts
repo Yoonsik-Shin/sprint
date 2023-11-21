@@ -8,16 +8,20 @@ import {
   Delete,
   Query,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { StudiesService } from './studies.service';
-import { UserData } from '../commons/decorators/user.decorator';
-import { User } from '../users/entities/user.entity';
-import { CreateStudyDto } from './dto/create-study.dto';
-import { UpdateStudyDto } from './dto/update-study.dto';
-import { CreateInquiryDto } from './dto/create-inquiry.dto';
-import { UpdateInquiryDto } from './dto/update-inquiry.dto';
-import { CreateInquiryResponseDto } from './dto/create-inquiry-response.dto';
-import { CreateAnnouncementDto } from './dto/create-announcement.dto';
+import { UserData } from '../commons';
+import { User } from '../users';
+import {
+  CreateAnnouncementDto,
+  CreateInquiryDto,
+  CreateInquiryResponseDto,
+  CreateStudyDto,
+  UpdateInquiryDto,
+  UpdateStudyDto,
+} from './dto';
 
+@ApiTags('Studies')
 @Controller('studies')
 export class StudiesController {
   constructor(private readonly studiesService: StudiesService) {}

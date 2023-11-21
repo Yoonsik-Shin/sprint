@@ -1,4 +1,3 @@
-import { UpdateTechStackDto } from './dto/update-tech-stack.dto';
 import {
   HttpStatus,
   ConflictException,
@@ -7,12 +6,10 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { EntityManager, Not, IsNull } from 'typeorm';
-import { TechStack } from './entities/tech-stack.entity';
-import { CreateTechStackDto } from './dto/create-tech-stack.dto';
-import { CreateStudyDto } from '../studies/dto/create-study.dto';
-import { UpdateStudyDto } from '../studies/dto/update-study.dto';
-import { CreateUserDto } from '../users/dto/create-user.dto';
-import { UpdateUserDto } from '../users/dto/update-user.dto';
+import { TechStack } from './entities';
+import { CreateStudyDto, UpdateStudyDto } from '../studies/dto';
+import { CreateUserDto, UpdateUserDto } from '../users/dto';
+import { CreateTechStackDto, UpdateTechStackDto } from './dto';
 
 @Injectable()
 export class TechStacksService {

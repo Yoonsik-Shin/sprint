@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import { CreateDateColumn, DeleteDateColumn, UpdateDateColumn } from 'typeorm';
 
 export class SuperEntity<T> {
@@ -7,6 +8,7 @@ export class SuperEntity<T> {
   @UpdateDateColumn()
   updatedAt: Date;
 
+  @Exclude()
   @DeleteDateColumn()
   deletedAt: Date;
 

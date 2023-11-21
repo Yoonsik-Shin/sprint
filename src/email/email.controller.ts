@@ -5,14 +5,14 @@ import {
   Post,
   BadRequestException,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { OnEvent } from '@nestjs/event-emitter';
 import { EmailService } from './email.service';
-import { UserData } from '../commons/decorators/user.decorator';
-import { User } from '../users/entities/user.entity';
-import { NOT_YET } from '../commons/constants/constants';
 import { EmailTokenDto } from './email.dto.ts/email-token.dto';
-import { Public } from '../commons/decorators/public.decorator';
+import { NOT_YET, Public, UserData } from '../commons';
+import { User } from '../users';
 
+@ApiTags('Email')
 @Controller('email')
 export class EmailController {
   constructor(private readonly emailService: EmailService) {}

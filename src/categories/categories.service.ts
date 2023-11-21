@@ -6,11 +6,8 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { EntityManager, IsNull, Not } from 'typeorm';
-import { CreateCategoryDto } from '../categories/dto/create-category.dto';
-import { Category } from '../categories/entities/category.interface';
-import { Job } from '../categories/entities/job.entity';
-import { DevCareer } from '../categories/entities/dev-career.entity';
-import { UpdateCategoryDto } from './dto/update-category.dto';
+import { Category, DevCareer, Job } from './entities';
+import { CreateCategoryDto, UpdateCategoryDto } from './dto';
 
 @Injectable()
 export class CategoriesService {

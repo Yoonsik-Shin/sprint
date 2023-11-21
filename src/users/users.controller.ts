@@ -9,14 +9,14 @@ import {
   UseInterceptors,
   UploadedFile,
 } from '@nestjs/common';
-import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { Public } from '../commons/decorators/public.decorator';
-import { UserData } from '../commons/decorators/user.decorator';
-import { User } from './entities/user.entity';
+import { ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { UsersService } from './users.service';
+import { User } from './entities/user.entity';
+import { CreateUserDto, UpdateUserDto } from './dto';
+import { Public, UserData } from '../commons/decorators';
 
+@ApiTags('Users')
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}

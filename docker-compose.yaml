@@ -9,6 +9,8 @@ services:
       - 3000:3000
     env_file:
       - ./.env.dev
+    volumes:
+      - ./src/:/back/src/
     restart: always
     depends_on:
       - mysql

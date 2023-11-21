@@ -14,7 +14,7 @@ import { Recruit } from './recruit.entity';
 import { User } from '../../users/entities/user.entity';
 import { TechStack } from '../../tech-stacks/entities/tech-stack.entity';
 import { Inquiry } from './inquiry.entity';
-import { Announcement } from './announcement.enitity';
+import { Announcement } from './announcement.entity';
 
 @Entity()
 export class Study extends SuperEntity<Study> {
