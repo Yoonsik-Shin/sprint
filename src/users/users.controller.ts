@@ -31,7 +31,7 @@ export class UsersController {
   // TODO: 로그인한 유저정보 불러오기
   @Get('req-user')
   fetchUser(@UserData('id') id: string) {
-    return this.usersService.findUser(id);
+    return this.usersService.findUserWithAllRelation(id);
   }
 
   // TODO: 프로필 업데이트

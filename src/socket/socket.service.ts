@@ -39,7 +39,7 @@ export class SocketService {
     client.emit('fetch-notifications', notifications);
 
     // UserId와 socketId를 MongoDB(or Redis)에 저장 (ConnectedUserSchema)
-    const isStored = await this.redis.set(userId, client.id);
+    const isStored = await this.redis.set(`sid:${userId}`, client.id);
     if (isStored === 'OK') console.log('success Store');
   }
 
@@ -87,7 +87,7 @@ export class SocketService {
       USER_RELATIONS.DevCareer,
       USER_RELATIONS.TechStacks,
     );
-    delete fromUser.password;
+
     const newNotification = await this.notificationModel.create({
       ...payload,
       fromUser,

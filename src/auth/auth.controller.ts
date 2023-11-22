@@ -49,9 +49,11 @@ export class AuthController {
 
   // TODO: 로그아웃
   @Get()
-  logout(@Session() session: Record<string, any>, @Res() res: Response) {
-    session.destroy(() => {
-      res.redirect(`${this.configService.get('CLIENT_URL')}/login`);
-    });
+  logout(
+    @Session() session: Record<string, any>,
+    @Res() res: Response,
+    @UserData('id') id: string,
+  ) {
+    return this.authService.logout(session, res, id);
   }
 }
