@@ -1,4 +1,3 @@
-import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { ClassSerializerInterceptor, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EventEmitterModule } from '@nestjs/event-emitter';
@@ -13,6 +12,7 @@ import { AuthModule } from './auth/auth.module';
 import { SocketModule } from './socket/socket.module';
 import { ChatModule } from './chat/chat.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
+import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { EmailModule } from './email';
 
 @Module({
@@ -22,7 +22,7 @@ import { EmailModule } from './email';
       envFilePath: [
         // '.env.local',
         '.env.dev',
-        // '.env'
+        // '.env',
       ],
       expandVariables: true,
     }),

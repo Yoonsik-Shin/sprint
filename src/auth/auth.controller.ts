@@ -1,4 +1,3 @@
-import { ConfigService } from '@nestjs/config';
 import {
   Controller,
   Post,
@@ -18,13 +17,14 @@ import { User } from '../users/entities/user.entity';
 import { Response } from 'express';
 import { NOT_YET } from '../commons/constants/constants';
 import { ApiTags } from '@nestjs/swagger';
+import { ConfigService } from '@nestjs/config';
 
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(
-    private readonly authService: AuthService,
     private readonly configService: ConfigService,
+    private readonly authService: AuthService,
   ) {}
 
   // TODO: 로그인
@@ -49,9 +49,11 @@ export class AuthController {
 
   // TODO: 로그아웃
   @Get()
-  logout(@Session() session: Record<string, any>, @Res() res: Response) {
-    session.destroy(() => {
-      res.redirect(`${this.configService.get('CLIENT_URL')}/login`);
-    });
+  logout(
+    @Session() session: Record<string, any>,
+    @Res() res: Response,
+    @UserData('id') id: string,
+  ) {
+    return this.authService.logout(session, res, id);
   }
 }

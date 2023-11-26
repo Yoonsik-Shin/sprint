@@ -36,7 +36,7 @@ export class EmailController {
     return this.emailService.firstLoginTokenVerify(emailToken, user);
   }
 
-  // TODO: 첫 로그인한 유저의 다른 이메일로 인증하기
+  // TODO: 첫 로그인한 유저의 다른 이메일로 인증보내기
   @Post('first/another')
   firstLoginSendTokenToAnotherEmail(
     @Body() { email }: EmailTokenDto,
@@ -47,6 +47,11 @@ export class EmailController {
       throw new BadRequestException(
         '회원가입하신 이메일과 동일합니다. 다른 이메일로 시도해주세요.',
       );
+    return this.emailService.sendToken(email);
+  }
+
+  @Post('first/retry')
+  firstLoginRetrySendToken(@Body() { email }: EmailTokenDto) {
     return this.emailService.sendToken(email);
   }
 
