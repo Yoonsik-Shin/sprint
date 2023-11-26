@@ -67,7 +67,9 @@ export class ChatService {
       .where({ studyId, status: true })
       .exec();
     const isConnectedMembers = await Promise.all(
-      studyMembers.map((studyMember) => this.redis.get(studyMember.userId)),
+      studyMembers.map((studyMember) =>
+        this.redis.get(`sid:${studyMember.userId}`),
+      ),
     );
     console.log('✔️  isConnectedMembers:', isConnectedMembers);
 

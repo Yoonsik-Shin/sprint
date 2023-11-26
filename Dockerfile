@@ -1,13 +1,23 @@
-FROM node
+# build
+FROM node:18-alpine as build
 
-WORKDIR /back/
+WORKDIR /back
 
-COPY ./package.json /back/
+COPY ./package.json ./
 
 RUN yarn install
 
-COPY . /back/
+COPY . .
 
-RUN yarn add bcrypt
+RUN yarn build
 
-CMD yarn start:dev
+#production
+FROM node:18-alpine as production
+
+COPY --from=build ./back/dist ./dist
+COPY --from=build ./back/package.json ./
+COPY --from=build ./back/yarn.lock  ./
+
+RUN yarn install --production
+
+CMD ["yarn", "start:prod"]

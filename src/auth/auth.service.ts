@@ -1,6 +1,6 @@
 import { EntityManager } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
-import { BadRequestException, HttpStatus, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { User } from '../users/entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';

@@ -47,7 +47,7 @@ export class SocketService {
     // --- 소켓 연결 해제시
     // MongoDB에 저장된 UserId와 socketId 정보 삭제 (ConnectedUserSchema)
     const userId = client.handshake.auth.userId;
-    const isDeleted = await this.redis.del(userId);
+    const isDeleted = await this.redis.del(`sid:${userId}`);
     if (isDeleted === 1) console.log('success Delete');
   }
 
@@ -64,7 +64,6 @@ export class SocketService {
       studyId,
       userId: fromUserId,
     });
-    console.log('✔️  isExist:', isExist);
     if (isExist) {
       client.emit('attend-duplicate', {
         statusCode: HttpStatus.BAD_REQUEST,
@@ -94,7 +93,7 @@ export class SocketService {
     });
 
     // 만약 redis에서 toUserId로 조회하여 sid값이 있다면, 소켓으로 알림내용 보내줌
-    const toUserSid = await this.redis.get(toUserId);
+    const toUserSid = await this.redis.get(`sid:${toUserId}`);
     console.log('✔️  toUserSid:', toUserSid);
     if (toUserSid)
       server.to(toUserSid).emit('new-notification', newNotification);
@@ -125,7 +124,7 @@ export class SocketService {
     });
 
     // 만약 redis에서 toUserId로 조회하여 sid값이 있다면, 소켓으로 알림내용 보내줌
-    const toUserSid = await this.redis.get(toUserId);
+    const toUserSid = await this.redis.get(`sid:${toUserId}`);
     if (toUserSid)
       server.to(toUserSid).emit('new-notification', newNotification);
   }
@@ -156,7 +155,7 @@ export class SocketService {
     );
 
     // 만약 redis에서 toUserId로 조회하여 sid값이 있다면, 소켓으로 알림내용 보내줌
-    const toUserSid = await this.redis.get(toUserId);
+    const toUserSid = await this.redis.get(`sid:${toUserId}`);
     if (toUserSid)
       server.to(toUserSid).emit('new-notification', newNotification);
   }
@@ -237,7 +236,9 @@ export class SocketService {
     // console.log('✔️  onlineMembers:', onlineMembers);
 
     const onlineMemberSIds = await Promise.all(
-      onlineMembers.map((studyMember) => this.redis.get(studyMember.userId)),
+      onlineMembers.map((studyMember) =>
+        this.redis.get(`sid:${studyMember.userId}`),
+      ),
     );
     console.log('✔️  onlineMemberSIds:', onlineMemberSIds);
     // console.log('✔️  onlineMemberSIds:', onlineMemberSIds);
@@ -301,7 +302,9 @@ export class SocketService {
     // console.log('✔️  leave --- onlineMembers:', onlineMembers);
 
     const onlineMemberSIds = await Promise.all(
-      onlineMembers.map((studyMember) => this.redis.get(studyMember.userId)),
+      onlineMembers.map((studyMember) =>
+        this.redis.get(`sid:${studyMember.userId}`),
+      ),
     );
     // console.log('✔️ leave --- onlineMemberSIds:', onlineMemberSIds);
 

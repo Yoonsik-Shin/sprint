@@ -32,7 +32,6 @@ export class User extends SuperEntity<User> {
   @Column({ length: 128 })
   password: string;
 
-  @Exclude()
   @Column({ default: 'NOT_YET' })
   emailVerified: string;
 

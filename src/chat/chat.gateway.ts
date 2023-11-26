@@ -7,7 +7,7 @@ import { Server, Socket } from 'socket.io';
 import { ChatService } from './chat.service';
 
 @WebSocketGateway({
-  // transports: ['websocket'],
+  transports: ['websocket'],
   cors: {
     origin: ['http://localhost:5173', process.env.BASE_URL],
     credentials: true,
