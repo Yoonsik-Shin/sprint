@@ -132,6 +132,7 @@ export class StudiesService {
       throw new BadRequestException('유효하지 않은 스터디 수정 요청입니다.');
     if (targetStudy.owner.id !== user.id)
       throw new UnauthorizedException('스터디 수정에 대한 권한이 없습니다.');
+
     const updatedStudy = Object.entries(updateStudyDto).reduce(
       (acc, [key, value]) => {
         return key && { ...acc, [key]: value };
@@ -140,6 +141,7 @@ export class StudiesService {
     );
     const techStacks = await this.techStacksService.techStack(updateStudyDto);
     updatedStudy.techStacks = techStacks;
+
     return this.entityManager.save(new Study(updatedStudy));
   }
 
@@ -244,20 +246,24 @@ export class StudiesService {
   deleteAnnouncement() {}
 
   async bookmarkStudy(studyId: number, user: User) {
+    const targetUser = await this.entityManager.findOne(User, {
+      where: { id: user.id },
+      relations: { bookmarkedStudies: true },
+    });
     const study = await this.findStudyWithRelations(
       studyId,
       STUDY_RELATIONS.TechStacks,
       STUDY_RELATIONS.Recruit,
     );
-    const bookmarkedStudy = user.bookmarkedStudies.find(
+    const bookmarkedStudy = targetUser.bookmarkedStudies.find(
       (bookmarkStudy) => bookmarkStudy.id === studyId,
     );
-    !bookmarkedStudy && user.bookmarkedStudies.push(study);
+    !bookmarkedStudy && targetUser.bookmarkedStudies.push(study);
     bookmarkedStudy &&
-      (user.bookmarkedStudies = user.bookmarkedStudies.filter(
+      (targetUser.bookmarkedStudies = targetUser.bookmarkedStudies.filter(
         (bookmarkStudy) => bookmarkStudy.id !== studyId,
       ));
-    return this.entityManager.save(user);
+    return this.entityManager.save(targetUser);
   }
 
   async checkStudyAttendRequest(id: number, user: User) {
